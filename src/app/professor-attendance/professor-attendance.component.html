@@ -1,0 +1,188 @@
+<div class="panel-header panel-header-sm"></div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-content">
+            <div>
+              <h4 class="card-title">
+                <i class="now-ui-icons ui-1_check"></i> Asistencia de Profesores
+              </h4>
+              <p class="card-category">Registra la asistencia diaria de los profesores</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-success" 
+                      (click)="guardarAsistencia()" 
+                      [disabled]="guardando || getPendientesPorRegistrar() === 0">
+                <i class="now-ui-icons ui-1_check"></i> 
+                {{ guardando ? 'Guardando...' : 'Guardar Asistencia' }}
+                <span *ngIf="getPendientesPorRegistrar() > 0" class="badge badge-light ml-2">
+                  {{ getPendientesPorRegistrar() }}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="card-body filtros-section">
+          <div class="row">
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_calendar-60"></i> Fecha *</label>
+                <input type="date" class="form-control fecha-input" 
+                       [(ngModel)]="fechaSeleccionada"
+                       (change)="cargarProfesores()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons location_pin"></i> Sede</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroSede"
+                        (change)="aplicarFiltros()">
+                  <option value="">Todas</option>
+                  <option *ngFor="let sede of sedes" [value]="getSedeId(sede)">
+                    {{ sede.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons sport_trophy"></i> Equipo</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroEquipo"
+                        (change)="aplicarFiltros()">
+                  <option value="">Todos</option>
+                  <option *ngFor="let equipo of equipos" [value]="getEquipoId(equipo)">
+                    {{ equipo.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_zoom-bold"></i> Nombre</label>
+                <input type="text" class="form-control" 
+                       placeholder="Buscar profesor..."
+                       [(ngModel)]="filtroNombre"
+                       (keyup.enter)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-12">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-secondary btn-block" (click)="limpiarFiltros()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i> Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fecha seleccionada y resumen -->
+          <div class="resumen-asistencia">
+            <div class="fecha-display">
+              <strong>{{ formatearFecha(fechaSeleccionada) }}</strong>
+            </div>
+            <div class="stats-container" *ngIf="profesoresFiltrados.length > 0">
+              <span class="badge badge-info">
+                {{ profesoresFiltrados.length }} profesores
+              </span>
+              <span class="badge badge-success ml-2">
+                <i class="now-ui-icons ui-1_check"></i> {{ getTotalPresentes() }} presentes
+              </span>
+              <span class="badge badge-secondary ml-2">
+                <i class="now-ui-icons ui-1_simple-remove"></i> {{ getTotalAusentes() }} ausentes
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones rápidas -->
+        <div class="acciones-rapidas" *ngIf="profesoresFiltrados.length > 0">
+          <button class="btn btn-sm btn-outline-success" (click)="marcarTodosPresentes()">
+            <i class="now-ui-icons ui-1_check"></i> Marcar todos presentes
+          </button>
+          <button class="btn btn-sm btn-outline-secondary ml-2" (click)="desmarcarTodos()">
+            <i class="now-ui-icons ui-1_simple-remove"></i> Desmarcar todos
+          </button>
+        </div>
+
+        <!-- TABLA -->
+        <div *ngIf="cargando" class="text-center p-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="!cargando">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <tr>
+                  <th style="width: 10%;">ID</th>
+                  <th style="width: 30%;">Nombre</th>
+                  <th class="text-right" style="width: 20%;">Salario/Clase</th>
+                  <th class="text-center" style="width: 20%;">Estado</th>
+                  <th class="text-center" style="width: 20%;">Asistencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let profesor of profesoresFiltrados" 
+                    [class.row-presente]="getAsistencia(profesor.idProfesor)"
+                    [class.row-registrado]="profesor.asistio">
+                  <td>
+                    <strong>#{{ profesor.idProfesor }}</strong>
+                  </td>
+                  <td>
+                    <div class="profesor-info">
+                      <span class="nombre">{{ profesor.nombre }}</span>
+                    </div>
+                  </td>
+                  <td class="text-right">
+                    <span class="badge badge-warning">{{ formatearSalario(profesor.salarioPorClase) }}</span>
+                  </td>
+                  <td class="text-center">
+                    <span *ngIf="profesor.asistio" class="badge badge-success">
+                      <i class="now-ui-icons ui-1_check"></i> Ya registrado
+                    </span>
+                    <span *ngIf="!profesor.asistio && getAsistencia(profesor.idProfesor)" class="badge badge-info">
+                      <i class="now-ui-icons ui-1_check"></i> Marcado
+                    </span>
+                    <span *ngIf="!profesor.asistio && !getAsistencia(profesor.idProfesor)" class="badge badge-secondary">
+                      <i class="now-ui-icons ui-1_simple-remove"></i> Sin marcar
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <div class="asistencia-toggle" *ngIf="!profesor.asistio">
+                      <button class="btn btn-sm" 
+                              [class.btn-success]="getAsistencia(profesor.idProfesor)"
+                              [class.btn-outline-secondary]="!getAsistencia(profesor.idProfesor)"
+                              (click)="toggleAsistencia(profesor)">
+                        <i class="now-ui-icons" 
+                           [class.ui-1_check]="getAsistencia(profesor.idProfesor)"
+                           [class.ui-1_simple-remove]="!getAsistencia(profesor.idProfesor)"></i>
+                        {{ getAsistencia(profesor.idProfesor) ? 'Presente' : 'Ausente' }}
+                      </button>
+                    </div>
+                    <div *ngIf="profesor.asistio" class="ya-registrado">
+                      <i class="now-ui-icons ui-1_lock-circle-open text-success"></i>
+                      <small class="text-muted">Guardado</small>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div *ngIf="profesoresFiltrados.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            No se encontraron profesores para la fecha seleccionada.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

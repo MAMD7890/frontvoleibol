@@ -1,0 +1,326 @@
+<div class="panel-header panel-header-lg">
+    <canvas baseChart id="bigDashboardChart"
+                [datasets]="lineBigDashboardChartData"
+                [labels]="lineBigDashboardChartLabels"
+                 [colors]="lineBigDashboardChartColors"
+                [options]="lineBigDashboardChartOptions"
+                [chartType]="lineBigDashboardChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+</div>
+
+<div class="main-content">
+  <!-- Filtros de Fecha -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-category">Filtros</h5>
+          <h4 class="card-title">Configurar Período de Reportes</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Fecha Desde</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaDesde">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Fecha Hasta</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaHasta">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Filtrar Profesor</label>
+                <input type="text" class="form-control" placeholder="Nombre del profesor" [(ngModel)]="filtroNombreProfesor">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-primary btn-block" (click)="aplicarFiltros()">
+                  <i class="now-ui-icons ui-1_zoom-bold"></i> Aplicar Filtros
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tarjetas de Resumen -->
+  <div class="row">
+    <div class="col-lg-3 col-md-6">
+      <div class="card card-stats">
+        <div class="card-body">
+          <div class="statistics statistics-horizontal">
+            <div class="info info-horizontal">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon icon-primary icon-circle">
+                    <i class="now-ui-icons education_hat"></i>
+                  </div>
+                </div>
+                <div class="col-7 text-right">
+                  <h3 class="info-title">{{ totalEstudiantes }}</h3>
+                  <h6 class="stats-title">Total Estudiantes</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons ui-2_favourite-28 text-success"></i> {{ estudiantesActivos }} activos
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card card-stats">
+        <div class="card-body">
+          <div class="statistics statistics-horizontal">
+            <div class="info info-horizontal">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon icon-success icon-circle">
+                    <i class="now-ui-icons users_single-02"></i>
+                  </div>
+                </div>
+                <div class="col-7 text-right">
+                  <h3 class="info-title">{{ reportePagos?.cantidadDocentes || 0 }}</h3>
+                  <h6 class="stats-title">Profesores</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons business_money-coins text-warning"></i> ${{ (reportePagos?.salarioPromedio || 0) | number:'1.0-0' }} promedio
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card card-stats">
+        <div class="card-body">
+          <div class="statistics statistics-horizontal">
+            <div class="info info-horizontal">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon icon-info icon-circle">
+                    <i class="now-ui-icons business_money-coins"></i>
+                  </div>
+                </div>
+                <div class="col-7 text-right">
+                  <h3 class="info-title">${{ (reportePagos?.totalAPagar || 0) | number:'1.0-0' }}</h3>
+                  <h6 class="stats-title">Total Pagos</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons ui-1_calendar-60"></i> Período seleccionado
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card card-stats">
+        <div class="card-body">
+          <div class="statistics statistics-horizontal">
+            <div class="info info-horizontal">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon icon-danger icon-circle">
+                    <i class="now-ui-icons shopping_credit-card"></i>
+                  </div>
+                </div>
+                <div class="col-7 text-right">
+                  <h3 class="info-title">${{ (reporteGastos?.totalMonto || 0) | number:'1.0-0' }}</h3>
+                  <h6 class="stats-title">Total Gastos</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons files_paper"></i> {{ reporteGastos?.cantidadGastos || 0 }} registros
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category">Reporte de Profesores</h5>
+          <h4 class="card-title">Asistencias por Profesor</h4>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart id="lineChartExample"
+                        [datasets]="lineChartData"
+                        [labels]="lineChartLabels"
+                        [colors]="lineChartColors"
+                        [options]="lineChartOptions"
+                        [chartType]="lineChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69" *ngIf="cargandoPagos"></i>
+            <span *ngIf="!cargandoPagos"><i class="now-ui-icons ui-1_check"></i> Datos actualizados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category">Estadísticas de Estudiantes</h5>
+          <h4 class="card-title">Estudiantes por Sede</h4>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart id="lineChartExampleWithNumbersAndGrid"
+                        [datasets]="lineChartWithNumbersAndGridData"
+                        [labels]="lineChartWithNumbersAndGridLabels"
+                        [colors]="lineChartWithNumbersAndGridColors"
+                        [options]="lineChartWithNumbersAndGridOptions"
+                        [chartType]="lineChartWithNumbersAndGridType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69" *ngIf="cargandoEstudiantes"></i>
+            <span *ngIf="!cargandoEstudiantes"><i class="now-ui-icons ui-1_check"></i> {{ totalEstudiantes }} estudiantes totales</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-category">Gastos del Mes</h5>
+          <h4 class="card-title">Gastos por Concepto</h4>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart id="barChartSimpleGradientsNumbers"
+                        [datasets]="lineChartGradientsNumbersData"
+                        [labels]="lineChartGradientsNumbersLabels"
+                        [colors]="lineChartGradientsNumbersColors"
+                        [options]="lineChartGradientsNumbersOptions"
+                        [chartType]="lineChartGradientsNumbersType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69" *ngIf="cargandoGastos"></i>
+            <span *ngIf="!cargandoGastos"><i class="now-ui-icons ui-2_time-alarm"></i> Período: {{ fechaDesde }} a {{ fechaHasta }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tablas de Detalle -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card card-tasks">
+        <div class="card-header">
+          <h5 class="card-category">Detalle de Pagos</h5>
+          <h4 class="card-title">Profesores del Período</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-full-width table-responsive">
+            <table class="table">
+              <thead class="text-primary">
+                <th>Profesor</th>
+                <th class="text-center">Asistencias</th>
+                <th class="text-right">Total</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pago of reportePagos?.pagos || []">
+                  <td>{{ pago.nombreProfesor }}</td>
+                  <td class="text-center">{{ pago.asistencias }}</td>
+                  <td class="text-right">${{ pago.totalCalculado | number:'1.0-0' }}</td>
+                </tr>
+                <tr *ngIf="!reportePagos?.pagos?.length">
+                  <td colspan="3" class="text-center text-muted">No hay datos para mostrar</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <hr>
+          <div class="stats">
+            <i class="now-ui-icons loader_refresh spin" *ngIf="cargandoPagos"></i>
+            <span *ngIf="!cargandoPagos">Total a pagar: <strong>${{ (reportePagos?.totalAPagar || 0) | number:'1.0-0' }}</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-category">Detalle de Gastos</h5>
+          <h4 class="card-title">Gastos del Período</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="text-primary">
+                <th>Concepto</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+                <th class="text-right">Monto</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let gasto of reporteGastos?.gastos || []">
+                  <td>{{ gasto.concepto }}</td>
+                  <td>{{ gasto.descripcion }}</td>
+                  <td>{{ gasto.fecha }}</td>
+                  <td class="text-right">${{ gasto.monto | number:'1.0-0' }}</td>
+                </tr>
+                <tr *ngIf="!reporteGastos?.gastos?.length">
+                  <td colspan="4" class="text-center text-muted">No hay gastos en este período</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <hr>
+          <div class="stats">
+            <i class="now-ui-icons loader_refresh spin" *ngIf="cargandoGastos"></i>
+            <span *ngIf="!cargandoGastos">Total gastos: <strong>${{ (reporteGastos?.totalMonto || 0) | number:'1.0-0' }}</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

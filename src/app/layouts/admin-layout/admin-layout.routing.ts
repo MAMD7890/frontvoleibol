@@ -1,0 +1,39 @@
+import { Routes } from '@angular/router';
+
+import { DashboardComponent } from '../../dashboard/dashboard.component';
+import { UserProfileComponent } from '../../user-profile/user-profile.component';
+import { TableListComponent } from '../../table-list/table-list.component';
+import { TypographyComponent } from '../../typography/typography.component';
+import { IconsComponent } from '../../icons/icons.component';
+import { MapsComponent } from '../../maps/maps.component';
+import { NotificationsComponent } from '../../notifications/notifications.component';
+import { UpgradeComponent } from '../../upgrade/upgrade.component';
+import { StudentsComponent } from '../../students/students.component';
+import { ProfessorsComponent } from '../../professors/professors.component';
+import { TeamsComponent } from '../../teams/teams.component';
+import { SettingsComponent } from '../../settings/settings.component';
+import { ExpensesComponent } from '../../expenses/expenses.component';
+import { ProfessorAttendanceComponent } from '../../professor-attendance/professor-attendance.component';
+import { ProfessorPaymentsComponent } from '../../professor-payments/professor-payments.component';
+import { StudentAttendanceComponent } from '../../student-attendance/student-attendance.component';
+import { StudentAttendanceReportComponent } from '../../student-attendance-report/student-attendance-report.component';
+
+export const AdminLayoutRoutes: Routes = [
+    { path: 'dashboard',      component: DashboardComponent },
+    { path: 'user-profile',   component: UserProfileComponent },
+    { path: 'table-list',     component: TableListComponent },
+    { path: 'students',       component: StudentsComponent },
+    { path: 'professors',     component: ProfessorsComponent },
+    { path: 'teams',          component: TeamsComponent },
+    { path: 'settings',       component: SettingsComponent },
+    { path: 'expenses',       component: ExpensesComponent },
+    { path: 'professor-attendance', component: ProfessorAttendanceComponent },
+    { path: 'professor-payments', component: ProfessorPaymentsComponent },
+    { path: 'student-attendance', component: StudentAttendanceComponent },
+    { path: 'student-attendance-report', component: StudentAttendanceReportComponent },
+    { path: 'typography',     component: TypographyComponent },
+    { path: 'icons',          component: IconsComponent },
+    { path: 'maps',           component: MapsComponent },
+    { path: 'notifications',  component: NotificationsComponent },
+    { path: 'upgrade',        component: UpgradeComponent }
+];

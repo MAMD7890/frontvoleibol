@@ -1,0 +1,287 @@
+<div class="panel-header panel-header-sm"></div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="card-title">
+              <i class="now-ui-icons users_single-02"></i> Gestión de Profesores
+            </h4>
+            <p class="card-category">Tabla responsiva de profesores</p>
+          </div>
+          <button class="btn btn-sm btn-primary" (click)="abrirModalCrear()">
+            <i class="now-ui-icons ui-1_simple-add"></i> Crear Profesor
+          </button>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="card-body filtros-section">
+          <div class="row">
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_zoom-bold"></i> Nombre</label>
+                <input type="text" class="form-control" 
+                       placeholder="Buscar por nombre..."
+                       [(ngModel)]="filtroNombre"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons business_badge"></i> Documento</label>
+                <input type="text" class="form-control" 
+                       placeholder="Número de documento..."
+                       [(ngModel)]="filtroDocumento"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_check"></i> Estado</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroEstado"
+                        (ngModelChange)="aplicarFiltros()">
+                  <option value="">Todos</option>
+                  <option value="true">Activo</option>
+                  <option value="false">Inactivo</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-secondary btn-block" (click)="limpiarFiltros()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i> Limpiar Filtros
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resumen -->
+          <div class="resumen-resultados" *ngIf="profesoresFiltrados.length > 0">
+            <span class="badge badge-info">
+              {{ profesoresFiltrados.length }} profesor(es) encontrado(s)
+            </span>
+          </div>
+        </div>
+        
+        <!-- Loading state -->
+        <div *ngIf="cargando" class="text-center p-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card-body" *ngIf="!cargando">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <tr>
+                  <th class="text-center" style="width: 15%;">Documento</th>
+                  <th style="width: 25%;">Nombre</th>
+                  <th style="width: 15%;">Teléfono</th>
+                  <th class="text-right" style="width: 15%;">Salario/Clase</th>
+                  <th class="text-center" style="width: 10%;">Estado</th>
+                  <th class="text-center" style="width: 20%;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let profesor of profesoresFiltrados">
+                  <td class="text-center">
+                    <strong>{{ profesor.documento }}</strong>
+                  </td>
+                  <td>
+                    {{ profesor.nombre }}
+                  </td>
+                  <td>
+                    {{ profesor.telefono }}
+                  </td>
+                  <td class="text-right">
+                    <span class="badge badge-success">{{ formatearSalario(profesor.salarioPorClase) }}</span>
+                  </td>
+                  <td class="text-center">
+                    <span class="badge" [ngClass]="profesor.estado ? 'badge-info' : 'badge-secondary'">
+                      {{ profesor.estado ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-info mr-2" 
+                            (click)="abrirModalEditar(profesor)"
+                            title="Ver/Editar detalles">
+                      <i class="now-ui-icons ui-2_settings-90"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" 
+                            (click)="eliminarProfesor(profesor)"
+                            title="Eliminar">
+                      <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty state -->
+          <div *ngIf="profesoresFiltrados.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            {{ profesores.length === 0 ? 'No hay profesores registrados. Crea uno nuevo para comenzar.' : 'No se encontraron profesores con los filtros aplicados.' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar profesor -->
+<ng-template #modalContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ editando ? 'Editar Profesor' : 'Crear Nuevo Profesor' }}
+    </h5>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    <form [formGroup]="formulario">
+      <!-- Primera fila -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="nombre">Nombre Completo *</label>
+            <input type="text" class="form-control" id="nombre" 
+                   formControlName="nombre"
+                   placeholder="Ej: Juan García López"
+                   [class.is-invalid]="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('nombre')?.errors?.['required']">
+              El nombre es requerido
+            </div>
+            <div class="invalid-feedback" *ngIf="formulario.get('nombre')?.errors?.['minlength']">
+              El nombre debe tener al menos 3 caracteres
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="documento">Número Documento *</label>
+            <input type="text" class="form-control" id="documento" 
+                   formControlName="documento"
+                   placeholder="Ej: 12345678"
+                   [class.is-invalid]="formulario.get('documento')?.invalid && formulario.get('documento')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('documento')?.errors?.['required']">
+              El documento es requerido
+            </div>
+            <div class="invalid-feedback" *ngIf="formulario.get('documento')?.errors?.['pattern']">
+              El documento debe contener solo números
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segunda fila -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="telefono">Teléfono *</label>
+            <input type="text" class="form-control" id="telefono" 
+                   formControlName="telefono"
+                   placeholder="Ej: 3215555555"
+                   [class.is-invalid]="formulario.get('telefono')?.invalid && formulario.get('telefono')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('telefono')?.errors?.['required']">
+              El teléfono es requerido
+            </div>
+            <div class="invalid-feedback" *ngIf="formulario.get('telefono')?.errors?.['pattern']">
+              El teléfono debe tener 10 dígitos
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="salarioPorClase">Salario por Clase *</label>
+            <input type="number" class="form-control" id="salarioPorClase" 
+                   formControlName="salarioPorClase"
+                   placeholder="Ej: 50000"
+                   step="1000"
+                   [class.is-invalid]="formulario.get('salarioPorClase')?.invalid && formulario.get('salarioPorClase')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('salarioPorClase')?.errors?.['required']">
+              El salario es requerido
+            </div>
+            <div class="invalid-feedback" *ngIf="formulario.get('salarioPorClase')?.errors?.['min']">
+              El salario debe ser mayor o igual a 0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tercera fila - Foto -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="fotoUrl">URL de Foto</label>
+            <input type="url" class="form-control" id="fotoUrl" 
+                   formControlName="fotoUrl"
+                   placeholder="https://ejemplo.com/foto.jpg">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="fotoNombre">Nombre del Archivo de Foto</label>
+            <input type="text" class="form-control" id="fotoNombre" 
+                   formControlName="fotoNombre"
+                   placeholder="Ej: juan_garcia.jpg">
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuarta fila - Estado -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Estado</label>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="estado" formControlName="estado">
+              <label class="custom-control-label" for="estado">
+                {{ formulario.get('estado')?.value ? 'Activo' : 'Inactivo' }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+      <i class="now-ui-icons ui-1_simple-remove"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="guardarProfesor()">
+      <i class="now-ui-icons ui-1_check"></i> {{ editando ? 'Actualizar' : 'Crear' }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal de confirmación para eliminar -->
+<ng-template #modalConfirmacion let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirmar Eliminación</h5>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <i class="now-ui-icons ui-1_bell-53 text-warning" style="font-size: 3rem;"></i>
+    <p class="mt-3">¿Estás seguro de eliminar al profesor <strong>{{ profesorAEliminar?.nombre }}</strong>?</p>
+    <p class="text-muted">Esta acción no se puede deshacer.</p>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirmarEliminar()">
+      <i class="now-ui-icons ui-1_simple-remove"></i> Eliminar
+    </button>
+  </div>
+</ng-template>

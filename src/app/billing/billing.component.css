@@ -1,0 +1,219 @@
+/* ================= VARIABLES ================= */
+:root {
+  --primary: #4f46e5;
+  --danger: #dc2626;
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+}
+
+/* ================= GLOBAL ================= */
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ================= HEADER ================= */
+.app-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 64px;
+  padding: 0 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-text {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.logout-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+/* ================= CHECKOUT ================= */
+.checkout-container {
+  padding-top: 90px;
+}
+
+.checkout-wrapper {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
+
+.checkout-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.checkout-header i {
+  font-size: 32px;
+  color: var(--primary);
+}
+
+.checkout-header h1 {
+  margin: 8px 0;
+}
+
+.checkout-main {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+/* ================= CARD ================= */
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.card-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+/* ================= FORM ================= */
+.form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.form .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ================= SUMMARY ================= */
+.price {
+  font-size: 1.8rem;
+  color: var(--primary);
+  font-weight: 700;
+  margin: 16px 0;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.total {
+  font-weight: 700;
+}
+
+/* ================= ACTIONS ================= */
+.actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 14px 24px;
+  border-radius: 10px;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+
+/* ================= MODAL ================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-container {
+  background: #fff;
+  padding: 32px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .checkout-main {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

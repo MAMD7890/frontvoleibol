@@ -1,0 +1,292 @@
+<div class="panel-header panel-header-sm"></div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="card-title">
+              <i class="now-ui-icons sport_user-run"></i> Gestión de Equipos
+            </h4>
+            <p class="card-category">Tabla responsiva de equipos deportivos</p>
+          </div>
+          <button class="btn btn-sm btn-primary" (click)="abrirModalCrear()">
+            <i class="now-ui-icons ui-1_simple-add"></i> Crear Equipo
+          </button>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="card-body filtros-section">
+          <div class="row">
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_zoom-bold"></i> Nombre</label>
+                <input type="text" class="form-control" 
+                       placeholder="Buscar por nombre..."
+                       [(ngModel)]="filtroNombre"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons files_single-copy-04"></i> Categoría</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroCategoria"
+                        (ngModelChange)="aplicarFiltros()">
+                  <option value="">Todas</option>
+                  <option *ngFor="let categoria of categorias" [value]="getCategoriaId(categoria)">
+                    {{ categoria.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons location_pin"></i> Sede</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroSede"
+                        (ngModelChange)="aplicarFiltros()">
+                  <option value="">Todas</option>
+                  <option *ngFor="let sede of sedes" [value]="getSedeId(sede)">
+                    {{ sede.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_check"></i> Estado</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroEstado"
+                        (ngModelChange)="aplicarFiltros()">
+                  <option value="">Todos</option>
+                  <option value="true">Activo</option>
+                  <option value="false">Inactivo</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-secondary btn-block" (click)="limpiarFiltros()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i> Limpiar Filtros
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resumen -->
+          <div class="resumen-resultados" *ngIf="equiposFiltrados.length > 0">
+            <span class="badge badge-info">
+              {{ equiposFiltrados.length }} equipo(s) encontrado(s)
+            </span>
+          </div>
+        </div>
+        
+        <!-- Loading state -->
+        <div *ngIf="cargando" class="text-center p-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card-body" *ngIf="!cargando">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <tr>
+                  <th style="width: 25%;">Nombre</th>
+                  <th style="width: 15%;">Categoría</th>
+                  <th style="width: 15%;">Sede</th>
+                  <th style="width: 20%;">Horario</th>
+                  <th class="text-center" style="width: 10%;">Estado</th>
+                  <th class="text-center" style="width: 15%;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let equipo of equiposFiltrados">
+                  <td>
+                    <strong>{{ equipo.nombre }}</strong>
+                  </td>
+                  <td>
+                    <span class="badge badge-primary">{{ getNombreCategoria(equipo) }}</span>
+                  </td>
+                  <td>
+                    <span class="badge badge-warning">{{ getNombreSede(equipo) }}</span>
+                  </td>
+                  <td>
+                    <small>{{ equipo.horario }}</small>
+                  </td>
+                  <td class="text-center">
+                    <span class="badge" [ngClass]="equipo.estado ? 'badge-info' : 'badge-secondary'">
+                      {{ equipo.estado ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-info mr-2" 
+                            (click)="abrirModalEditar(equipo)"
+                            title="Ver/Editar detalles">
+                      <i class="now-ui-icons ui-2_settings-90"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" 
+                            (click)="eliminarEquipo(equipo)"
+                            title="Eliminar">
+                      <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty state -->
+          <div *ngIf="equiposFiltrados.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            {{ equipos.length === 0 ? 'No hay equipos registrados. Crea uno nuevo para comenzar.' : 'No se encontraron equipos con los filtros aplicados.' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar equipo -->
+<ng-template #modalContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ editando ? 'Editar Equipo' : 'Crear Nuevo Equipo' }}
+    </h5>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    <form [formGroup]="formulario">
+      <!-- Primera fila -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="nombre">Nombre del Equipo *</label>
+            <input type="text" class="form-control" id="nombre" 
+                   formControlName="nombre"
+                   placeholder="Ej: Equipo A Futsal"
+                   [class.is-invalid]="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('nombre')?.errors?.['required']">
+              El nombre es requerido
+            </div>
+            <div class="invalid-feedback" *ngIf="formulario.get('nombre')?.errors?.['minlength']">
+              El nombre debe tener al menos 3 caracteres
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segunda fila -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="categoriaId">Categoría *</label>
+            <select class="form-control" id="categoriaId" formControlName="categoriaId"
+                    [class.is-invalid]="formulario.get('categoriaId')?.invalid && formulario.get('categoriaId')?.touched">
+              <option value="">- Selecciona una categoría -</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria.idCategoria">
+                {{ categoria.nombre }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="formulario.get('categoriaId')?.errors?.['required']">
+              La categoría es requerida
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="sedeId">Sede/Campus *</label>
+            <select class="form-control" id="sedeId" formControlName="sedeId"
+                    [class.is-invalid]="formulario.get('sedeId')?.invalid && formulario.get('sedeId')?.touched">
+              <option value="">- Selecciona una sede -</option>
+              <option *ngFor="let sede of sedes" [value]="sede.idSede">
+                {{ sede.nombre }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="formulario.get('sedeId')?.errors?.['required']">
+              La sede es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tercera fila -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="horario">Horario *</label>
+            <input type="text" class="form-control" id="horario" 
+                   formControlName="horario"
+                   placeholder="Ej: Lunes y Miércoles 18:00 - 20:00"
+                   [class.is-invalid]="formulario.get('horario')?.invalid && formulario.get('horario')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('horario')?.errors?.['required']">
+              El horario es requerido
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuarta fila -->
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label for="fotoUrl">URL de Foto</label>
+            <input type="url" class="form-control" id="fotoUrl" 
+                   formControlName="fotoUrl"
+                   placeholder="https://ejemplo.com/equipo.jpg">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Estado</label>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="estado" formControlName="estado">
+              <label class="custom-control-label" for="estado">
+                {{ formulario.get('estado')?.value ? 'Activo' : 'Inactivo' }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+      <i class="now-ui-icons ui-1_simple-remove"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="guardarEquipo()">
+      <i class="now-ui-icons ui-1_check"></i> {{ editando ? 'Actualizar' : 'Crear' }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal de confirmación para eliminar -->
+<ng-template #modalConfirmacion let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirmar Eliminación</h5>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <i class="now-ui-icons ui-1_bell-53 text-warning" style="font-size: 3rem;"></i>
+    <p class="mt-3">¿Estás seguro de eliminar el equipo <strong>{{ equipoAEliminar?.nombre }}</strong>?</p>
+    <p class="text-muted">Esta acción no se puede deshacer.</p>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirmarEliminar()">
+      <i class="now-ui-icons ui-1_simple-remove"></i> Eliminar
+    </button>
+  </div>
+</ng-template>

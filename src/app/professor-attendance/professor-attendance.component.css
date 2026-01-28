@@ -1,0 +1,285 @@
+.card-header {
+  padding: 1.5rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-content > div {
+  flex: 1;
+}
+
+.header-actions .btn {
+  white-space: nowrap;
+}
+
+/* Filtros */
+.filtros-section {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 1rem 1.5rem;
+}
+
+.filtros-section .form-group {
+  margin-bottom: 0.5rem;
+}
+
+.filtros-section label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.filtros-section .form-control {
+  font-size: 13px;
+  padding: 0.5rem 0.75rem;
+}
+
+.fecha-input {
+  font-weight: 600;
+  border-color: rgba(26, 26, 26, 0.8);
+}
+
+.resumen-asistencia {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.fecha-display {
+  font-size: 16px;
+  color: #333;
+  text-transform: capitalize;
+}
+
+.stats-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Acciones rápidas */
+.acciones-rapidas {
+  padding: 0.75rem 1.5rem;
+  background-color: #fff;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+/* Tabla */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 100%;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  font-weight: 600;
+  border-bottom: 2px solid rgba(26, 26, 26, 0.8);
+  white-space: nowrap;
+  color: rgba(26, 26, 26, 0.8);
+  background-color: #f9f9f9;
+  padding: 1rem;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(249, 99, 50, 0.05);
+}
+
+.table tbody tr.row-presente {
+  background-color: rgba(24, 206, 15, 0.08);
+}
+
+.table tbody tr.row-registrado {
+  background-color: rgba(24, 206, 15, 0.15);
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.profesor-info .nombre {
+  font-weight: 500;
+}
+
+/* Badges */
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-success {
+  background-color: #18ce0f;
+  color: white;
+}
+
+.badge-warning {
+  background-color: #FFB236;
+  color: white;
+}
+
+.badge-info {
+  background-color: #2CA8FF;
+  color: white;
+}
+
+.badge-secondary {
+  background-color: #888888;
+  color: white;
+}
+
+.badge-light {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Toggle de asistencia */
+.asistencia-toggle .btn {
+  min-width: 110px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.ya-registrado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ya-registrado i {
+  font-size: 20px;
+}
+
+/* Botones */
+.btn-outline-secondary {
+  border-color: #888;
+  color: #888;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #888;
+  color: white;
+}
+
+.btn-outline-success {
+  border-color: #18ce0f;
+  color: #18ce0f;
+}
+
+.btn-outline-success:hover {
+  background-color: #18ce0f;
+  color: white;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.alert {
+  margin-bottom: 0;
+  padding: 1.5rem;
+}
+
+.spinner-border {
+  color: rgba(26, 26, 26, 0.8);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+  }
+  
+  .header-actions .btn {
+    width: 100%;
+  }
+  
+  .filtros-section .row > div {
+    margin-bottom: 0.75rem;
+  }
+  
+  .resumen-asistencia {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .acciones-rapidas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .acciones-rapidas .btn {
+    margin-left: 0 !important;
+  }
+  
+  .table thead th,
+  .table tbody td {
+    padding: 0.5rem 0.25rem;
+    font-size: 12px;
+  }
+  
+  .asistencia-toggle .btn {
+    min-width: 90px;
+    padding: 0.25rem 0.5rem;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 576px) {
+  .table thead th,
+  .table tbody td {
+    padding: 0.4rem 0.2rem;
+    font-size: 11px;
+  }
+  
+  .badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  
+  .asistencia-toggle .btn {
+    min-width: 80px;
+    font-size: 10px;
+  }
+}

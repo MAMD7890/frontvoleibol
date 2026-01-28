@@ -1,0 +1,273 @@
+<div class="panel-header panel-header-sm"></div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-content">
+            <div>
+              <h4 class="card-title">
+                <i class="now-ui-icons files_paper"></i> Reporte de Asistencia - Estudiantes
+              </h4>
+              <p class="card-category">Consulta el historial de asistencia de los estudiantes</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-info btn-sm" (click)="exportarCSV()">
+                <i class="now-ui-icons arrows-1_cloud-download-93"></i> Exportar CSV
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="card-body filtros-section">
+          <div class="row">
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_calendar-60"></i> Desde</label>
+                <input type="date" class="form-control" 
+                       [(ngModel)]="fechaInicio"
+                       (change)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_calendar-60"></i> Hasta</label>
+                <input type="date" class="form-control" 
+                       [(ngModel)]="fechaFin"
+                       (change)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons business_globe"></i> Sede</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroSede"
+                        (change)="aplicarFiltros()">
+                  <option value="">Todas</option>
+                  <option *ngFor="let sede of sedes" [value]="getSedeId(sede)">
+                    {{ sede.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons education_hat"></i> Estudiante</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroEstudiante"
+                        (change)="aplicarFiltros()">
+                  <option value="">Todos</option>
+                  <option *ngFor="let est of estudiantes" [value]="getEstudianteId(est)">
+                    {{ est.nombreCompleto }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_check"></i> Estado</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroAsistencia"
+                        (change)="aplicarFiltros()">
+                  <option value="">Todos</option>
+                  <option value="presente">Presente</option>
+                  <option value="ausente">Ausente</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-secondary btn-block" (click)="limpiarFiltros()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i> Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Búsqueda -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input type="text" class="form-control" 
+                       placeholder="Buscar por nombre, documento u observación..."
+                       [(ngModel)]="filtroBusqueda"
+                       (keyup)="aplicarFiltros()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Estadísticas Generales -->
+          <div class="stats-general">
+            <div class="stat-card">
+              <span class="stat-value">{{ asistenciasFiltradas.length }}</span>
+              <span class="stat-label">Registros</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">{{ getEstudiantesUnicos() }}</span>
+              <span class="stat-label">Estudiantes</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">{{ getFechasUnicas() }}</span>
+              <span class="stat-label">Días</span>
+            </div>
+            <div class="stat-card stat-success">
+              <span class="stat-value">{{ getTotalPresentes() }}</span>
+              <span class="stat-label">Presentes</span>
+            </div>
+            <div class="stat-card stat-danger">
+              <span class="stat-value">{{ getTotalAusentes() }}</span>
+              <span class="stat-label">Ausentes</span>
+            </div>
+            <div class="stat-card stat-info">
+              <span class="stat-value">{{ getPorcentajeGeneral() }}%</span>
+              <span class="stat-label">% Asistencia</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs de Vista -->
+        <div class="card-body">
+          <div class="btn-group vista-tabs" role="group">
+            <button type="button" 
+                    class="btn" 
+                    [class.btn-primary]="vistaActual === 'detalle'"
+                    [class.btn-outline-primary]="vistaActual !== 'detalle'"
+                    (click)="cambiarVista('detalle')">
+              <i class="now-ui-icons design_bullet-list-67"></i> Vista Detalle
+            </button>
+            <button type="button" 
+                    class="btn"
+                    [class.btn-primary]="vistaActual === 'resumen'"
+                    [class.btn-outline-primary]="vistaActual !== 'resumen'"
+                    (click)="cambiarVista('resumen')">
+              <i class="now-ui-icons business_chart-bar-32"></i> Vista Resumen
+            </button>
+          </div>
+        </div>
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando" class="text-center p-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+
+        <!-- TABLA DETALLE -->
+        <div class="card-body" *ngIf="!cargando && vistaActual === 'detalle'">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <tr>
+                  <th style="width: 12%;">Fecha</th>
+                  <th style="width: 25%;">Estudiante</th>
+                  <th style="width: 12%;">Documento</th>
+                  <th style="width: 15%;">Sede</th>
+                  <th class="text-center" style="width: 12%;">Asistencia</th>
+                  <th style="width: 24%;">Observaciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let registro of asistenciasFiltradas"
+                    [class.row-presente]="registro.asistio"
+                    [class.row-ausente]="!registro.asistio">
+                  <td>
+                    <span class="fecha-badge">{{ formatearFecha(registro.fecha) }}</span>
+                  </td>
+                  <td>
+                    <span class="nombre-estudiante">{{ registro.estudiante }}</span>
+                  </td>
+                  <td>
+                    <small class="text-muted">{{ registro.documento }}</small>
+                  </td>
+                  <td>
+                    <span class="badge badge-info">{{ registro.sede }}</span>
+                  </td>
+                  <td class="text-center">
+                    <span *ngIf="registro.asistio" class="badge badge-success">
+                      <i class="now-ui-icons ui-1_check"></i> Presente
+                    </span>
+                    <span *ngIf="!registro.asistio" class="badge badge-danger">
+                      <i class="now-ui-icons ui-1_simple-remove"></i> Ausente
+                    </span>
+                  </td>
+                  <td>
+                    <small>{{ registro.observaciones || '-' }}</small>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div *ngIf="asistenciasFiltradas.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            No se encontraron registros de asistencia para los filtros seleccionados.
+          </div>
+        </div>
+
+        <!-- TABLA RESUMEN -->
+        <div class="card-body" *ngIf="!cargando && vistaActual === 'resumen'">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <tr>
+                  <th style="width: 25%;">Estudiante</th>
+                  <th style="width: 12%;">Documento</th>
+                  <th style="width: 15%;">Sede</th>
+                  <th class="text-center" style="width: 10%;">Total Días</th>
+                  <th class="text-center" style="width: 10%;">Presente</th>
+                  <th class="text-center" style="width: 10%;">Ausente</th>
+                  <th class="text-center" style="width: 18%;">% Asistencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let est of estadisticasEstudiantes">
+                  <td>
+                    <span class="nombre-estudiante">{{ est.nombreCompleto }}</span>
+                  </td>
+                  <td>
+                    <small class="text-muted">{{ est.documento }}</small>
+                  </td>
+                  <td>
+                    <span class="badge badge-info">{{ est.sede }}</span>
+                  </td>
+                  <td class="text-center">
+                    <strong>{{ est.totalAsistencias }}</strong>
+                  </td>
+                  <td class="text-center">
+                    <span class="text-success">{{ est.diasPresente }}</span>
+                  </td>
+                  <td class="text-center">
+                    <span class="text-danger">{{ est.diasAusente }}</span>
+                  </td>
+                  <td class="text-center">
+                    <div class="progress-container">
+                      <div class="progress">
+                        <div class="progress-bar" 
+                             [class.bg-success]="est.porcentajeAsistencia >= 90"
+                             [class.bg-warning]="est.porcentajeAsistencia >= 70 && est.porcentajeAsistencia < 90"
+                             [class.bg-danger]="est.porcentajeAsistencia < 70"
+                             [style.width.%]="est.porcentajeAsistencia">
+                        </div>
+                      </div>
+                      <span class="badge ml-2" [ngClass]="getAsistenciaBadgeClass(est.porcentajeAsistencia)">
+                        {{ est.porcentajeAsistencia }}%
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div *ngIf="estadisticasEstudiantes.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            No hay estadísticas disponibles para el período seleccionado.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

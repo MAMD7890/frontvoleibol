@@ -1,0 +1,271 @@
+/* ============================================
+   GALACTICOS - Custom Theme Styles
+   Colores: Blanco, Negro, Dorado
+   Botones: Verde, Rojo, Azul
+   ============================================ */
+
+/* Variables CSS personalizadas */
+:root {
+  --galacticos-black: #1a1a1a;
+  --galacticos-white: #FFFFFF;
+  --galacticos-gold: #D4AF37;
+  --galacticos-gold-light: #F4E4BC;
+  --galacticos-gold-dark: #B8960C;
+  --galacticos-green: #28a745;
+  --galacticos-red: #dc3545;
+  --galacticos-blue: #007bff;
+}
+
+/* Fondo general del panel principal */
+.main-panel {
+  background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%) !important;
+}
+
+/* Encabezados con estilo dorado */
+.card .card-header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  color: #D4AF37 !important;
+  border-bottom: 2px solid #D4AF37 !important;
+}
+
+.card .card-header .card-title {
+  color: #D4AF37 !important;
+}
+
+.card .card-header .card-category {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Tablas con estilo Galacticos - Negro con opacidad 80% */
+.table thead th {
+  background-color: rgba(26, 26, 26, 0.8) !important;
+  color: #FFFFFF !important;
+  border-bottom: 2px solid rgba(26, 26, 26, 0.8) !important;
+}
+
+/* Sobreescribir text-primary en tablas para usar negro */
+.table thead.text-primary th {
+  color: rgba(26, 26, 26, 0.8) !important;
+}
+
+.table thead.text-primary {
+  border-bottom: 2px solid rgba(26, 26, 26, 0.8) !important;
+}
+
+/* Línea debajo de encabezados de tabla */
+.table > thead > tr > th {
+  border-bottom: 2px solid rgba(26, 26, 26, 0.8) !important;
+  color: rgba(26, 26, 26, 0.8) !important;
+  font-weight: 600;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(26, 26, 26, 0.05) !important;
+}
+
+/* Botones personalizados */
+.btn-primary {
+  background-color: #D4AF37 !important;
+  border-color: #D4AF37 !important;
+  color: #1a1a1a !important;
+}
+
+.btn-primary:hover {
+  background-color: #B8960C !important;
+  border-color: #B8960C !important;
+}
+
+.btn-success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.btn-success:hover {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
+}
+
+.btn-danger {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.btn-danger:hover {
+  background-color: #c82333 !important;
+  border-color: #bd2130 !important;
+}
+
+.btn-info {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+}
+
+.btn-info:hover {
+  background-color: #0069d9 !important;
+  border-color: #0062cc !important;
+}
+
+/* Sidebar con estilo negro y dorado */
+.sidebar:after,
+.off-canvas-sidebar:after {
+  background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%) !important;
+}
+
+.sidebar .logo .simple-text {
+  color: #D4AF37 !important;
+}
+
+.sidebar .nav li.active > a {
+  background-color: #D4AF37 !important;
+  color: #1a1a1a !important;
+}
+
+.sidebar .nav li.active > a i {
+  color: #1a1a1a !important;
+}
+
+.sidebar .nav li.active > a p {
+  color: #1a1a1a !important;
+}
+
+/* Iconos dorados en el sidebar */
+.sidebar .logo-img i {
+  color: #D4AF37 !important;
+}
+
+/* Links y elementos interactivos */
+a {
+  color: #D4AF37;
+}
+
+a:hover {
+  color: #B8960C;
+}
+
+/* Navbar superior */
+.navbar {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Cards con borde dorado sutil */
+.card {
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Inputs con estilo */
+.form-control:focus {
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25) !important;
+}
+
+/* Badges y etiquetas */
+.badge-primary {
+  background-color: #D4AF37 !important;
+  color: #1a1a1a !important;
+}
+
+/* Paginación */
+.page-item.active .page-link {
+  background-color: #D4AF37 !important;
+  border-color: #D4AF37 !important;
+  color: #1a1a1a !important;
+}
+
+.page-link {
+  color: #D4AF37 !important;
+}
+
+.page-link:hover {
+  color: #B8960C !important;
+}
+
+/* Dropdown menus */
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: rgba(212, 175, 55, 0.1) !important;
+  color: #D4AF37 !important;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B8960C;
+}
+
+/* Footer */
+.footer {
+  background-color: #1a1a1a !important;
+  color: #FFFFFF !important;
+}
+
+.footer a {
+  color: #D4AF37 !important;
+}
+
+/* ============================================
+   SOBREESCRIBIR COLOR PRIMARIO (NARANJA -> NEGRO)
+   ============================================ */
+
+/* Text primary - Cambiar naranja por negro */
+.text-primary {
+  color: rgba(26, 26, 26, 0.8) !important;
+}
+
+a.text-primary:hover,
+a.text-primary:focus {
+  color: #1a1a1a !important;
+}
+
+/* Links con color negro */
+a {
+  color: rgba(26, 26, 26, 0.8);
+}
+
+a:hover,
+a:focus {
+  color: #1a1a1a;
+}
+
+/* Badges primarios */
+.badge-primary {
+  background-color: rgba(26, 26, 26, 0.8) !important;
+  color: #FFFFFF !important;
+}
+
+/* Nav tabs activos */
+.nav-tabs .nav-link.active {
+  border-color: rgba(26, 26, 26, 0.8) !important;
+  color: rgba(26, 26, 26, 0.8) !important;
+}
+
+/* Inputs focus */
+.form-control:focus {
+  border-color: rgba(26, 26, 26, 0.8) !important;
+  box-shadow: 0 0 0 0.2rem rgba(26, 26, 26, 0.25) !important;
+}
+
+/* Progress bars */
+.progress-bar {
+  background-color: rgba(26, 26, 26, 0.8) !important;
+}
+
+/* Alerts primarios */
+.alert-primary {
+  background-color: rgba(26, 26, 26, 0.1) !important;
+  border-color: rgba(26, 26, 26, 0.3) !important;
+  color: #1a1a1a !important;
+}

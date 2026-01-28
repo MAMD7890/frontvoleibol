@@ -1,0 +1,491 @@
+/* =========================================================
+   HOST (rompe herencia del layout padre)
+========================================================= */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+
+
+.app-header {
+  height: 60px;
+  padding: 0 24px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.logo-img {
+  width: 36px;
+  height: 36px;
+  background: #f5c542;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-img i {
+  color: #000;
+  font-size: 18px;
+}
+
+.logo-text {
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #f44336; /* Rojo para el icono de salida */
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s;
+}
+
+.logout-btn:hover {
+  color: #d32f2f; /* Rojo más oscuro al pasar el mouse */
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+/* =========================================================
+   PAGE BASE
+========================================================= */
+.plans-page {
+  height: 100%;
+  padding: 60px 20px 80px;
+  background-color: #ffffff;
+  color: #ffffff;
+  font-family: inherit;
+
+  overflow-y: auto;      /* scroll vive aquí */
+  overflow-x: hidden;
+  box-sizing: border-box;
+
+  /* Ocultar scrollbar visual */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Chrome / Edge / Safari */
+.plans-page::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+.plans-hero {
+  background-color: #111; /* Fondo oscuro */
+  color: #f0a500; /* Color dorado para el texto */
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 64px;
+}
+
+.plans-title {
+  font-size: 32px; /* Tamaño más grande para destacar */
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #f0a500; /* Color dorado */
+}
+
+.plans-title span {
+  color: #f5c542;
+}
+
+.plans-subtitle {
+  font-size: 18px;
+  color: #d1d1d1; /* Texto gris claro */
+  margin-top: 10px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   CHIP
+========================================================= */
+.chip {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip-enroll {
+  background-color: #f0a500; /* Fondo dorado */
+  color: #111; /* Texto oscuro */
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   PLAN CARD
+========================================================= */
+.plan-card {
+  position: relative;
+  background: #1a1a1a; /* Fondo negro */
+  color: #ffffff; /* Texto blanco para contraste */
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-sizing: border-box;
+}
+
+.plan-card:hover {
+  transform: translateY(-15px) scale(1.1); /* Movimiento más pronunciado hacia arriba y aumento de tamaño */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); /* Sombra más intensa al pasar el mouse */
+}
+
+/* =========================================================
+   POPULAR
+========================================================= */
+.plan-card.popular {
+  border: 2px solid #f5c542;
+}
+
+.popular-chip {
+  position: absolute;
+  top: -10px;                
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d4af37;
+  color: #000;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+.plan-header {
+  margin-bottom: 20px;
+}
+
+.plan-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: #f0a500; /* Títulos en dorado para contraste con el fondo negro */
+}
+
+.plan-subtitle {
+  font-size: 13px;
+  color: #d1d1d1; /* Subtítulos en gris claro */
+}
+
+/* =========================================================
+   BODY
+========================================================= */
+.plan-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* =========================================================
+   PRICE
+========================================================= */
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: #f0a500; /* Precio en dorado */
+}
+
+.plan-price .currency {
+  font-size: 18px;
+  color: #f5c542;
+}
+
+.plan-price .amount {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* =========================================================
+   FEATURES
+========================================================= */
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #d0d0d0;
+  font-size: 14px;
+}
+
+.plan-features li {
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan-features .check {
+  color: #f5c542;
+  font-weight: 700;
+}
+
+/* =========================================================
+   ACTION
+========================================================= */
+.plan-action {
+  margin-top: 22px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #f5c542;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.plan-action:hover {
+  background: #ffd861;
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   TIPOGRAFÍA ALINEADA AL SISTEMA
+========================= */
+
+.plans-page {
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.plans-title {
+  font-size: 22px;          /* antes 40px */
+  font-weight: 600;        /* igual que headers del sistema */
+  letter-spacing: 0;
+}
+
+.plans-subtitle {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.plan-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.plan-subtitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+}
+
+.plan-price .amount {
+  font-size: 26px;         /* más acorde a dashboard */
+  font-weight: 600;
+}
+
+.plan-features {
+  font-size: 13px;
+}
+
+.plan-action {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 768px) {
+  .plans-title {
+    font-size: 18px; /* Ajustar tamaño para pantallas pequeñas */
+    text-align: center; /* Centrar el texto */
+    line-height: 1.4;
+  }
+
+  .plans-subtitle {
+    font-size: 14px; /* Reducir tamaño del subtítulo */
+    text-align: center;
+  }
+
+  .plans-hero {
+    padding: 20px; /* Reducir el padding en dispositivos móviles */
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr; /* Mostrar los planes en una sola columna */
+    gap: 16px; /* Reducir el espacio entre los elementos */
+  }
+
+  .plan-card {
+    padding: 16px; /* Reducir el padding de las tarjetas */
+  }
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con más opacidad */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-icon {
+  font-size: 60px;
+  color: #d32f2f; /* Rojo para el icono */
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #212529; /* Texto oscuro */
+}
+
+.modal-message {
+  font-size: 16px;
+  color: #6c757d; /* Texto gris */
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.btn-modal {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.btn-cancel {
+  background: #e9ecef; /* Fondo gris claro */
+  color: #495057; /* Texto gris oscuro */
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #dee2e6; /* Fondo gris más claro al pasar el mouse */
+  transform: scale(1.05);
+}
+
+.btn-confirm {
+  background: #d32f2f; /* Rojo para el botón de confirmación */
+  color: #fff;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-confirm:hover {
+  background: #b71c1c; /* Rojo más oscuro al pasar el mouse */
+  transform: scale(1.05);
+}
+
+.logo-image {
+  width: 50px; /* Tamaño adecuado para el logo */
+  height: auto;
+}
+
+/* =========================================================
+   CAMBIO EN TARJETAS PLAN
+========================================================= */
+.plan-card {
+  background: #1a1a1a; /* Fondo negro */
+  color: #ffffff; /* Texto blanco para contraste */
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-15px) scale(1.1); /* Movimiento más pronunciado hacia arriba y aumento de tamaño */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); /* Sombra más intensa al pasar el mouse */
+}
+
+.plan-title {
+  color: #f0a500; /* Títulos en dorado para contraste con el fondo negro */
+}
+
+.plan-subtitle {
+  color: #d1d1d1; /* Subtítulos en gris claro */
+}
+
+.plan-price {
+  color: #f0a500; /* Precio en dorado */
+}

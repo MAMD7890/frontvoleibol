@@ -1,0 +1,144 @@
+/* Dashboard Component Styles */
+
+/* Tarjetas de estadísticas */
+.card-stats {
+    margin-bottom: 20px;
+}
+
+.card-stats .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.card-stats .icon-primary {
+    background: linear-gradient(135deg, #c9a227 0%, #e8c547 100%);
+    color: #fff;
+}
+
+.card-stats .icon-success {
+    background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+    color: #fff;
+}
+
+.card-stats .icon-info {
+    background: linear-gradient(135deg, #007bff 0%, #17a2b8 100%);
+    color: #fff;
+}
+
+.card-stats .icon-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #f5365c 100%);
+    color: #fff;
+}
+
+.card-stats .info-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0;
+}
+
+.card-stats .stats-title {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.card-stats .card-footer {
+    padding: 10px 15px;
+}
+
+.card-stats .card-footer .stats {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Tarjetas de gráficos */
+.card-chart .card-header {
+    padding-bottom: 0;
+}
+
+.card-chart .card-category {
+    color: #c9a227;
+    font-weight: 500;
+}
+
+.card-chart .card-title {
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+/* Filtros */
+.card .form-group label {
+    color: #1a1a1a;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.card .form-control {
+    border-color: #ddd;
+    border-radius: 8px;
+}
+
+.card .form-control:focus {
+    border-color: #c9a227;
+    box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.25);
+}
+
+/* Tablas */
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    border-bottom: 2px solid #ddd;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    padding: 12px 15px;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(201, 162, 39, 0.05);
+}
+
+/* Botón aplicar filtros */
+.btn-primary {
+    background-color: #1a1a1a !important;
+    border-color: #1a1a1a !important;
+    color: #c9a227 !important;
+}
+
+.btn-primary:hover {
+    background-color: #c9a227 !important;
+    border-color: #c9a227 !important;
+    color: #1a1a1a !important;
+}
+
+/* Animación de carga */
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .card-stats .info-title {
+        font-size: 1.4rem;
+    }
+    
+    .card-stats .icon-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}

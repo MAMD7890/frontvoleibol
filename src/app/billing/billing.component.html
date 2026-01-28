@@ -1,0 +1,104 @@
+<!-- ================= HEADER ================= -->
+<header class="app-header">
+  <div class="header-left">
+    <div class="logo-img">
+      <img
+        src="https://miro.medium.com/v2/resize:fit:450/format:webp/1*A4bJG-J6YqEG_4NYhARRXg.png"
+        alt="Galácticos Logo"
+        class="logo-image"
+      />
+    </div>
+    <span class="logo-text">GALÁCTICOS</span>
+  </div>
+
+  <button class="logout-btn" (click)="confirmLogout()">
+    <i class="fas fa-sign-out-alt"></i>
+  </button>
+</header>
+
+<!-- ================= MODAL LOGOUT ================= -->
+<div class="modal-overlay" *ngIf="showLogoutModal" (click)="cancelLogout()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <i class="fas fa-sign-out-alt modal-icon"></i>
+    <h3>¿Cerrar sesión?</h3>
+    <p>Debes volver a iniciar sesión para acceder nuevamente.</p>
+
+    <div class="modal-actions">
+      <button class="btn-outline" (click)="cancelLogout()">Cancelar</button>
+      <button class="btn-danger" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CHECKOUT ================= -->
+<div class="checkout-container">
+  <div class="checkout-wrapper">
+
+    <header class="checkout-header">
+      <i class="fas fa-shopping-cart"></i>
+      <h1>Finalizar compra</h1>
+      <p>Completa tus datos para continuar con el pago</p>
+    </header>
+
+    <div class="checkout-main">
+
+      <!-- ===== RESUMEN ===== -->
+      <section class="card">
+        <div class="card-header">
+          <i class="fas fa-receipt"></i>
+          <h2>Resumen</h2>
+        </div>
+
+        <div class="card-body" *ngIf="selectedPlan">
+          <h3>{{ selectedPlan.label }}</h3>
+          <p>{{ selectedPlan.months }} mes(es)</p>
+
+          <div class="price">
+            ${{ selectedPlan.price | number:'1.0-0' }}
+          </div>
+
+          <div class="totals">
+            <div>
+              <span>IVA (19%)</span>
+              <span>${{ selectedPlan.price * 0.19 | number:'1.0-0' }}</span>
+            </div>
+            <div class="total">
+              <span>Total</span>
+              <span>${{ selectedPlan.price * 1.19 | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FORMULARIO ===== -->
+      <section class="card">
+        <div class="card-header">
+          <i class="fas fa-user"></i>
+          <h2>Facturación</h2>
+        </div>
+
+        <form class="card-body form">
+          <div class="row">
+            <input placeholder="Nombre" [(ngModel)]="nombre" name="nombre" />
+            <input placeholder="Apellido" [(ngModel)]="apellido" name="apellido" />
+          </div>
+
+          <input placeholder="Correo" [(ngModel)]="correo" name="correo" />
+          <input placeholder="Documento" [(ngModel)]="documento" name="documento" />
+          <input placeholder="Teléfono" [(ngModel)]="telefono" name="telefono" />
+          <input placeholder="Dirección" [(ngModel)]="direccion" name="direccion" />
+        </form>
+      </section>
+
+    </div>
+
+    <!-- ===== ACTIONS ===== -->
+    <div class="actions">
+      <button class="btn-outline" (click)="goBack()">Volver</button>
+      <button class="btn-primary" (click)="continuar()">
+        Pagar ${{ selectedPlan.price * 1.19 | number:'1.0-0' }}
+      </button>
+    </div>
+
+  </div>
+</div>

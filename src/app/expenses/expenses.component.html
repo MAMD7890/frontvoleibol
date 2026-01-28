@@ -1,0 +1,282 @@
+<div class="panel-header panel-header-sm"></div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-content">
+            <div>
+              <h4 class="card-title">
+                <i class="now-ui-icons business_money-coins"></i> Gestión de Gastos
+              </h4>
+              <p class="card-category">Administra los gastos de la organización</p>
+            </div>
+            <button class="btn btn-primary" (click)="abrirModalCrear()">
+              <i class="now-ui-icons ui-1_simple-add"></i> Nuevo Gasto
+            </button>
+          </div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="card-body filtros-section">
+          <div class="row">
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_zoom-bold"></i> Concepto</label>
+                <input type="text" class="form-control" 
+                       placeholder="Buscar por concepto..."
+                       [(ngModel)]="filtroConcepto"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons location_pin"></i> Sede</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroSede"
+                        (ngModelChange)="aplicarFiltros()">
+                  <option value="">Todas las sedes</option>
+                  <option *ngFor="let sede of sedes" [value]="getSedeId(sede)">
+                    {{ sede.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_calendar-60"></i> Desde</label>
+                <input type="date" class="form-control" 
+                       [(ngModel)]="filtroFechaDesde"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_calendar-60"></i> Hasta</label>
+                <input type="date" class="form-control" 
+                       [(ngModel)]="filtroFechaHasta"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-12">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-secondary btn-block" (click)="limpiarFiltros()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i> Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resumen -->
+          <div class="resumen-gastos" *ngIf="gastosFiltrados.length > 0">
+            <span class="badge badge-info">
+              {{ gastosFiltrados.length }} gasto(s) encontrado(s)
+            </span>
+            <span class="badge badge-success ml-2">
+              Total: {{ formatearMonto(getTotalGastos()) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- TABLA -->
+        <div *ngIf="cargando" class="text-center p-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="!cargando">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <tr>
+                  <th style="width: 18%;">Concepto</th>
+                  <th style="width: 25%;">Descripción</th>
+                  <th class="text-right" style="width: 15%;">Monto</th>
+                  <th class="text-center" style="width: 12%;">Fecha</th>
+                  <th style="width: 15%;">Sede</th>
+                  <th class="text-center" style="width: 15%;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let gasto of gastosFiltrados">
+                  <td><strong>{{ gasto.concepto }}</strong></td>
+                  <td class="descripcion-cell" [title]="gasto.descripcion">
+                    {{ gasto.descripcion.length > 40 ? (gasto.descripcion | slice:0:40) + '...' : gasto.descripcion }}
+                  </td>
+                  <td class="text-right monto-cell">
+                    <span class="badge badge-warning">{{ formatearMonto(gasto.monto) }}</span>
+                  </td>
+                  <td class="text-center">{{ formatearFecha(gasto.fecha) }}</td>
+                  <td>
+                    <span class="badge badge-info">{{ getNombreSede(gasto) }}</span>
+                  </td>
+                  <td class="text-center actions-cell">
+                    <div class="actions-container">
+                      <button class="btn btn-sm btn-info" 
+                              (click)="abrirModalEditar(gasto)"
+                              title="Ver/Editar detalles">
+                        <i class="now-ui-icons ui-2_settings-90"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" 
+                              (click)="confirmarEliminar(gasto)"
+                              title="Eliminar">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="gastosFiltrados.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            {{ gastos.length === 0 ? 'No hay gastos registrados. Crea uno nuevo para comenzar.' : 'No se encontraron gastos con los filtros aplicados.' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar GASTO -->
+<ng-template #modalGasto let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <i class="now-ui-icons business_money-coins"></i>
+      {{ editando ? 'Editar Gasto' : 'Registrar Nuevo Gasto' }}
+    </h5>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    <form [formGroup]="formularioGasto">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="concepto">Concepto *</label>
+            <input type="text" class="form-control" id="concepto" 
+                   formControlName="concepto"
+                   placeholder="Ej: Alquiler cancha"
+                   [class.is-invalid]="formularioGasto.get('concepto')?.invalid && formularioGasto.get('concepto')?.touched">
+            <div class="invalid-feedback" *ngIf="formularioGasto.get('concepto')?.errors?.['required']">
+              El concepto es requerido
+            </div>
+            <div class="invalid-feedback" *ngIf="formularioGasto.get('concepto')?.errors?.['minlength']">
+              El concepto debe tener al menos 3 caracteres
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="monto">Monto *</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
+              <input type="number" class="form-control" id="monto" 
+                     formControlName="monto"
+                     placeholder="0.00"
+                     step="0.01"
+                     min="0"
+                     [class.is-invalid]="formularioGasto.get('monto')?.invalid && formularioGasto.get('monto')?.touched">
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="formularioGasto.get('monto')?.errors?.['required'] && formularioGasto.get('monto')?.touched">
+              El monto es requerido
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="formularioGasto.get('monto')?.errors?.['min'] && formularioGasto.get('monto')?.touched">
+              El monto debe ser mayor a 0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="descripcion">Descripción *</label>
+            <textarea class="form-control" id="descripcion" 
+                   formControlName="descripcion"
+                   rows="3"
+                   placeholder="Ej: Pago mensual enero"
+                   [class.is-invalid]="formularioGasto.get('descripcion')?.invalid && formularioGasto.get('descripcion')?.touched"></textarea>
+            <div class="invalid-feedback" *ngIf="formularioGasto.get('descripcion')?.errors?.['required']">
+              La descripción es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="fecha">Fecha *</label>
+            <input type="date" class="form-control" id="fecha" 
+                   formControlName="fecha"
+                   [class.is-invalid]="formularioGasto.get('fecha')?.invalid && formularioGasto.get('fecha')?.touched">
+            <div class="invalid-feedback" *ngIf="formularioGasto.get('fecha')?.errors?.['required']">
+              La fecha es requerida
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="sedeId">Sede *</label>
+            <select class="form-control" id="sedeId" 
+                    formControlName="sedeId"
+                    [class.is-invalid]="formularioGasto.get('sedeId')?.invalid && formularioGasto.get('sedeId')?.touched">
+              <option value="">Seleccionar sede...</option>
+              <option *ngFor="let sede of sedes" [value]="getSedeId(sede)">
+                {{ sede.nombre }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="formularioGasto.get('sedeId')?.errors?.['required']">
+              La sede es requerida
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+      <i class="now-ui-icons ui-1_simple-remove"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="guardarGasto()">
+      <i class="now-ui-icons ui-1_check"></i> {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal de confirmación para eliminar -->
+<ng-template #modalConfirmacion let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirmar Eliminación</h5>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <i class="now-ui-icons ui-1_bell-53 text-warning" style="font-size: 3rem;"></i>
+    <p class="mt-3">
+      ¿Estás seguro de eliminar el gasto 
+      <strong>"{{ gastoAEliminar?.concepto }}"</strong>?
+    </p>
+    <p class="text-muted">
+      Monto: <strong>{{ gastoAEliminar ? formatearMonto(gastoAEliminar.monto) : '' }}</strong>
+    </p>
+    <p class="text-danger small">Esta acción no se puede deshacer.</p>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-danger" (click)="eliminarGasto()">
+      <i class="now-ui-icons ui-1_simple-remove"></i> Eliminar
+    </button>
+  </div>
+</ng-template>

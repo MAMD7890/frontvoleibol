@@ -1,0 +1,248 @@
+<div class="panel-header panel-header-sm"></div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-content">
+            <div>
+              <h4 class="card-title">
+                <i class="now-ui-icons business_money-coins"></i> Reporte de Pagos a Docentes
+              </h4>
+              <p class="card-category">Genera reportes de pagos según las asistencias registradas</p>
+            </div>
+            <div class="header-actions" *ngIf="reporteGenerado && pagos.length > 0">
+              <button class="btn btn-info btn-sm" (click)="exportarCSV()">
+                <i class="now-ui-icons arrows-1_cloud-download-93"></i> Exportar CSV
+              </button>
+              <button class="btn btn-secondary btn-sm ml-2" (click)="imprimir()">
+                <i class="now-ui-icons files_paper"></i> Imprimir
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="card-body filtros-section">
+          <div class="row">
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_calendar-60"></i> Desde *</label>
+                <input type="date" class="form-control fecha-input" 
+                       [(ngModel)]="fechaDesde">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_calendar-60"></i> Hasta *</label>
+                <input type="date" class="form-control fecha-input" 
+                       [(ngModel)]="fechaHasta">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons users_single-02"></i> Nombre Docente</label>
+                <input type="text" class="form-control" 
+                       placeholder="Buscar por nombre..."
+                       [(ngModel)]="filtroNombre">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-2_favourite-28"></i> ID Docente</label>
+                <input type="number" class="form-control" 
+                       placeholder="ID..."
+                       [(ngModel)]="filtroIdDocente">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <div class="btn-group-filtros">
+                  <button class="btn btn-primary" (click)="generarReporte()" [disabled]="cargando">
+                    <i class="now-ui-icons ui-1_zoom-bold"></i> 
+                    {{ cargando ? 'Generando...' : 'Generar Reporte' }}
+                  </button>
+                  <button class="btn btn-outline-secondary" (click)="limpiarFiltros()">
+                    <i class="now-ui-icons ui-1_simple-remove"></i> Limpiar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESUMEN DEL REPORTE -->
+        <div class="resumen-reporte" *ngIf="reporteGenerado && reporte">
+          <div class="resumen-header">
+            <h5><i class="now-ui-icons files_single-copy-04"></i> Resumen del Período: {{ getPeriodoTexto() }}</h5>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-sm-6">
+              <div class="stat-card stat-docentes">
+                <div class="stat-icon">
+                  <i class="now-ui-icons users_single-02"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">{{ reporte.cantidadDocentes }}</span>
+                  <span class="stat-label">Docentes</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="stat-card stat-asistencias">
+                <div class="stat-icon">
+                  <i class="now-ui-icons ui-1_check"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">{{ getTotalAsistencias() }}</span>
+                  <span class="stat-label">Total Asistencias</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="stat-card stat-promedio">
+                <div class="stat-icon">
+                  <i class="now-ui-icons business_chart-bar-32"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">{{ formatearMoneda(reporte.salarioPromedio) }}</span>
+                  <span class="stat-label">Pago Promedio</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="stat-card stat-total">
+                <div class="stat-icon">
+                  <i class="now-ui-icons business_money-coins"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">{{ formatearMoneda(reporte.totalAPagar) }}</span>
+                  <span class="stat-label">Total a Pagar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resumen de estados -->
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="estado-resumen">
+                <span class="badge badge-success mr-2">
+                  <i class="now-ui-icons ui-1_check"></i> {{ getTotalPagados() }} Pagados ({{ formatearMoneda(getMontoPagado()) }})
+                </span>
+                <span class="badge badge-warning">
+                  <i class="now-ui-icons ui-1_send"></i> {{ getTotalPendientes() }} Pendientes ({{ formatearMoneda(getMontoPendiente()) }})
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones rápidas -->
+        <div class="acciones-rapidas" *ngIf="reporteGenerado && pagos.length > 0">
+          <button class="btn btn-sm btn-outline-success" (click)="marcarTodosPagados()">
+            <i class="now-ui-icons ui-1_check"></i> Marcar todos pagados
+          </button>
+          <button class="btn btn-sm btn-outline-warning ml-2" (click)="marcarTodosPendientes()">
+            <i class="now-ui-icons ui-1_send"></i> Marcar todos pendientes
+          </button>
+        </div>
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando" class="text-center p-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Generando reporte...</span>
+          </div>
+          <p class="mt-2 text-muted">Generando reporte...</p>
+        </div>
+
+        <!-- TABLA DE PAGOS -->
+        <div class="card-body" *ngIf="!cargando && reporteGenerado">
+          <div class="table-responsive" *ngIf="pagos.length > 0">
+            <table class="table table-hover table-striped">
+              <thead class="text-primary">
+                <tr>
+                  <th style="width: 15%;">Documento</th>
+                  <th style="width: 28%;">Nombre del Profesor</th>
+                  <th class="text-center" style="width: 12%;">Asistencias</th>
+                  <th class="text-right" style="width: 15%;">Salario/Clase</th>
+                  <th class="text-right" style="width: 15%;">Total a Pagar</th>
+                  <th class="text-center" style="width: 15%;">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pago of pagos; let i = index">
+                  <td>
+                    <span class="badge badge-secondary">{{ pago.documento || 'N/A' }}</span>
+                  </td>
+                  <td>
+                    <div class="profesor-info">
+                      <i class="now-ui-icons users_single-02"></i>
+                      <span class="nombre">{{ pago.nombreProfesor }}</span>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <span class="badge" [class.badge-success]="pago.asistencias > 0" 
+                                        [class.badge-secondary]="pago.asistencias === 0">
+                      {{ pago.asistencias }} clase(s)
+                    </span>
+                  </td>
+                  <td class="text-right">
+                    <span class="salario">{{ formatearMoneda(pago.salarioPorClase) }}</span>
+                  </td>
+                  <td class="text-right">
+                    <span class="total-pagar" [class.sin-pago]="pago.totalCalculado === 0">
+                      {{ formatearMoneda(pago.totalCalculado) }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <div class="estado-toggle" *ngIf="pago.totalCalculado > 0">
+                      <button class="btn btn-sm" 
+                              [class.btn-success]="getEstadoPago(pago.idProfesor)"
+                              [class.btn-warning]="!getEstadoPago(pago.idProfesor)"
+                              (click)="toggleEstadoPago(pago.idProfesor)">
+                        <i class="now-ui-icons" 
+                           [class.ui-1_check]="getEstadoPago(pago.idProfesor)"
+                           [class.ui-1_send]="!getEstadoPago(pago.idProfesor)"></i>
+                        {{ getEstadoPago(pago.idProfesor) ? 'Pagado' : 'Pendiente' }}
+                      </button>
+                    </div>
+                    <span *ngIf="pago.totalCalculado === 0" class="badge badge-light">
+                      Sin pago
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="fila-total">
+                  <td colspan="2"><strong>TOTAL GENERAL</strong></td>
+                  <td class="text-center"><strong>{{ getTotalAsistencias() }}</strong></td>
+                  <td class="text-right">-</td>
+                  <td class="text-right">
+                    <strong class="total-general">{{ formatearMoneda(reporte?.totalAPagar || 0) }}</strong>
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          
+          <div *ngIf="pagos.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            No se encontraron docentes con asistencias en el período seleccionado.
+          </div>
+        </div>
+
+        <!-- MENSAJE INICIAL -->
+        <div *ngIf="!cargando && !reporteGenerado" class="mensaje-inicial">
+          <div class="icono-grande">
+            <i class="now-ui-icons files_paper"></i>
+          </div>
+          <h5>Genera un reporte de pagos</h5>
+          <p>Selecciona el período de fechas y haz clic en "Generar Reporte" para ver los pagos pendientes a docentes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

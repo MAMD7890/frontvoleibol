@@ -1,0 +1,318 @@
+<div class="auth-container">
+  <div class="auth-wrapper">
+    <!-- Panel Izquierdo - Branding -->
+    <div class="auth-brand-panel">
+      <div class="brand-content">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <i class="fas fa-futbol"></i>
+          </div>
+          <h1 class="brand-title">GALACTICOS</h1>
+        </div>
+        <p class="brand-tagline">Sistema de Gestión Deportiva</p>
+        <div class="brand-features">
+          <div class="feature-item">
+            <i class="fas fa-futbol"></i>
+            <span>Gestión de Equipos</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-users"></i>
+            <span>Control de Estudiantes</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>Administración de Profesores</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Reportes y Estadísticas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Derecho - Formulario -->
+    <div class="auth-form-panel">
+      <div class="auth-form-container">
+        <!-- Toggle Login/Registro -->
+        <div class="auth-toggle">
+          <button 
+            type="button"
+            class="toggle-btn" 
+            [class.active]="isLoginMode"
+            (click)="isLoginMode = true; clearMessages()">
+            <i class="fas fa-sign-in-alt"></i>
+            Iniciar Sesión
+          </button>
+          <button 
+            type="button"
+            class="toggle-btn" 
+            [class.active]="!isLoginMode"
+            (click)="isLoginMode = false; clearMessages()">
+            <i class="fas fa-user-plus"></i>
+            Registrarse
+          </button>
+        </div>
+
+        <!-- Mensajes de Error/Éxito -->
+        <div class="alert alert-danger" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-circle"></i>
+          {{ errorMessage }}
+          <button type="button" class="close-alert" (click)="clearMessages()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="alert alert-success" *ngIf="successMessage">
+          <i class="fas fa-check-circle"></i>
+          {{ successMessage }}
+        </div>
+
+        <!-- Formulario de Login -->
+        <form *ngIf="isLoginMode" class="auth-form" (ngSubmit)="onLogin()" (keypress)="onKeyPress($event)">
+          <h2 class="form-title">
+            <i class="fas fa-user-circle"></i>
+            Bienvenido de nuevo
+          </h2>
+          <p class="form-subtitle">Ingresa tus credenciales para continuar</p>
+
+          <div class="form-group">
+            <label for="loginEmail">
+              <i class="fas fa-envelope"></i>
+              Correo Electrónico
+            </label>
+            <input 
+              type="email" 
+              id="loginEmail"
+              class="form-control"
+              [(ngModel)]="loginData.email"
+              name="email"
+              placeholder="ejemplo@correo.com"
+              required
+              [class.is-invalid]="loginData.email && !isValidEmail(loginData.email)">
+            <div class="invalid-feedback" *ngIf="loginData.email && !isValidEmail(loginData.email)">
+              Por favor, ingresa un correo válido
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword">
+              <i class="fas fa-lock"></i>
+              Contraseña
+            </label>
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                id="loginPassword"
+                class="form-control"
+                [(ngModel)]="loginData.password"
+                name="password"
+                placeholder="••••••••"
+                required>
+              <button 
+                type="button" 
+                class="password-toggle"
+                (click)="togglePasswordVisibility()">
+                <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+              </button>
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-auth-submit"
+            [disabled]="isLoading || !isLoginValid()">
+            <span *ngIf="!isLoading">
+              <i class="fas fa-sign-in-alt"></i>
+              Iniciar Sesión
+            </span>
+            <span *ngIf="isLoading" class="loading-spinner">
+              <i class="fas fa-spinner fa-spin"></i>
+              Ingresando...
+            </span>
+          </button>
+
+          <div class="form-footer">
+            <p>¿No tienes una cuenta? 
+              <a href="javascript:void(0)" (click)="toggleMode()">Regístrate aquí</a>
+            </p>
+          </div>
+        </form>
+
+        <!-- Formulario de Registro -->
+        <form *ngIf="!isLoginMode" class="auth-form" (ngSubmit)="onRegister()">
+          <h2 class="form-title">
+            <i class="fas fa-user-plus"></i>
+            Crear Cuenta
+          </h2>
+          <p class="form-subtitle">Completa el formulario para registrarte</p>
+
+          <!-- Upload de Foto -->
+          <div class="photo-upload-section">
+            <div class="photo-preview" (click)="triggerFileInput()">
+              <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview">
+              <div class="photo-placeholder" *ngIf="!previewUrl">
+                <i class="fas fa-camera"></i>
+                <span>Subir Foto</span>
+              </div>
+              <div class="photo-overlay">
+                <i class="fas fa-edit"></i>
+              </div>
+            </div>
+            <input 
+              type="file" 
+              #fileInput
+              accept="image/*"
+              (change)="onFileSelected($event)"
+              style="display: none">
+            <button 
+              type="button" 
+              class="btn-remove-photo"
+              *ngIf="previewUrl"
+              (click)="removePhoto()">
+              <i class="fas fa-trash"></i>
+              Eliminar
+            </button>
+            <small class="photo-hint">
+              <span class="required-badge">*</span> Obligatorio - Máximo 5MB (JPG, PNG, GIF)
+            </small>
+            <div class="photo-error" *ngIf="!selectedFile && registerNombre">
+              <i class="fas fa-exclamation-triangle"></i> La foto es obligatoria
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="nombre">
+              <i class="fas fa-user"></i>
+              Nombre Completo <span class="required-badge">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="nombre"
+              class="form-control"
+              [(ngModel)]="registerNombre"
+              name="nombre"
+              placeholder="Ingresa tu nombre completo"
+              required
+              minlength="2"
+              [class.is-invalid]="registerNombre && registerNombre.length < 2">
+            <div class="invalid-feedback" *ngIf="registerNombre && registerNombre.length < 2">
+              El nombre debe tener al menos 2 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="registerEmail">
+              <i class="fas fa-envelope"></i>
+              Correo Electrónico <span class="required-badge">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="registerEmail"
+              class="form-control"
+              [(ngModel)]="registerEmail"
+              name="email"
+              placeholder="ejemplo@correo.com"
+              required
+              [class.is-invalid]="registerEmail && !isValidEmail(registerEmail)">
+            <div class="invalid-feedback" *ngIf="registerEmail && !isValidEmail(registerEmail)">
+              Por favor, ingresa un correo válido
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="registerPassword">
+                <i class="fas fa-lock"></i>
+                Contraseña <span class="required-badge">*</span>
+              </label>
+              <div class="password-input-wrapper">
+                <input 
+                  [type]="showPassword ? 'text' : 'password'" 
+                  id="registerPassword"
+                  class="form-control"
+                  [(ngModel)]="registerPassword"
+                  name="password"
+                  placeholder="Mín. 6 caracteres"
+                  required
+                  minlength="6"
+                  [class.is-invalid]="registerPassword && registerPassword.length < 6">
+                <button 
+                  type="button" 
+                  class="password-toggle"
+                  (click)="togglePasswordVisibility()">
+                  <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="registerPassword && registerPassword.length < 6">
+                Mínimo 6 caracteres
+              </div>
+            </div>
+
+            <div class="form-group half">
+              <label for="confirmPassword">
+                <i class="fas fa-lock"></i>
+                Confirmar <span class="required-badge">*</span>
+              </label>
+              <div class="password-input-wrapper">
+                <input 
+                  [type]="showConfirmPassword ? 'text' : 'password'" 
+                  id="confirmPassword"
+                  class="form-control"
+                  [(ngModel)]="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Repite la contraseña"
+                  required
+                  [class.is-invalid]="confirmPassword && confirmPassword !== registerPassword">
+                <button 
+                  type="button" 
+                  class="password-toggle"
+                  (click)="toggleConfirmPasswordVisibility()">
+                  <i [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="confirmPassword && confirmPassword !== registerPassword">
+                No coincide
+              </div>
+            </div>
+          </div>
+
+          <div class="password-strength" *ngIf="registerPassword">
+            <div class="strength-bar">
+              <div 
+                class="strength-fill"
+                [class.weak]="registerPassword.length < 6"
+                [class.medium]="registerPassword.length >= 6 && registerPassword.length < 10"
+                [class.strong]="registerPassword.length >= 10"
+                [style.width]="registerPassword.length < 6 ? '33%' : (registerPassword.length < 10 ? '66%' : '100%')">
+              </div>
+            </div>
+            <span class="strength-text">
+              {{ registerPassword.length < 6 ? 'Débil' : (registerPassword.length < 10 ? 'Media' : 'Fuerte') }}
+            </span>
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-auth-submit"
+            [disabled]="isLoading || !isRegisterValid()">
+            <span *ngIf="!isLoading">
+              <i class="fas fa-user-plus"></i>
+              Crear Cuenta
+            </span>
+            <span *ngIf="isLoading" class="loading-spinner">
+              <i class="fas fa-spinner fa-spin"></i>
+              Registrando...
+            </span>
+          </button>
+
+          <div class="form-footer">
+            <p>¿Ya tienes una cuenta? 
+              <a href="javascript:void(0)" (click)="toggleMode()">Inicia sesión</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

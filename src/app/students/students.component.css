@@ -1,0 +1,246 @@
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.card-header > div {
+  flex: 1;
+}
+
+.card-header .btn {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Filtros */
+.filtros-section {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 1rem 1.5rem;
+}
+
+.filtros-section .form-group {
+  margin-bottom: 0.5rem;
+}
+
+.filtros-section label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.filtros-section .form-control {
+  font-size: 13px;
+  padding: 0.5rem 0.75rem;
+}
+
+.resumen-resultados {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #ddd;
+}
+
+.btn-outline-secondary {
+  border-color: #888;
+  color: #888;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #888;
+  color: white;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 100%;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  font-weight: 600;
+  border-bottom: 2px solid rgba(26, 26, 26, 0.8);
+  white-space: nowrap;
+  color: rgba(26, 26, 26, 0.8);
+  background-color: #f9f9f9;
+  padding: 1rem;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(249, 99, 50, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  margin: 0 2px;
+}
+
+.btn-sm i {
+  margin-right: 3px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.alert {
+  margin-bottom: 0;
+  padding: 1.5rem;
+}
+
+.spinner-border {
+  color: rgba(26, 26, 26, 0.8);
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input.form-control,
+.form-group select.form-control {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+}
+
+.form-group input.form-control:focus,
+.form-group select.form-control:focus {
+  border-color: rgba(26, 26, 26, 0.8);
+  box-shadow: 0 0 0 0.2rem rgba(249, 99, 50, 0.25);
+}
+
+/* Modal styling */
+.modal {
+  backdrop-filter: blur(0px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .card-header .btn {
+    margin-left: 0;
+    margin-top: 0;
+    width: 100%;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 0.5rem 0.25rem;
+    font-size: 12px;
+  }
+
+  .btn-sm {
+    padding: 0.2rem 0.4rem;
+    font-size: 11px;
+    margin: 2px !important;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  /* Botones de acciones en fila para móvil */
+  .table tbody td:last-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+  
+  .table tbody td:last-child .btn {
+    margin: 0 !important;
+    padding: 0.3rem 0.5rem;
+    min-width: 32px;
+  }
+}
+
+@media (max-width: 576px) {
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .modal-body {
+    max-height: 80vh;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 0.4rem 0.2rem;
+    font-size: 11px;
+  }
+
+  /* Hacer los botones más pequeños en pantallas muy pequeñas */
+  .table tbody td:last-child .btn {
+    padding: 0.25rem 0.4rem;
+    min-width: 28px;
+  }
+  
+  .table tbody td:last-child .btn i {
+    font-size: 12px;
+  }
+
+  .row {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+
+  .col-md-6,
+  .col-md-4 {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}

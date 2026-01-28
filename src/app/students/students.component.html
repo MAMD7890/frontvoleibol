@@ -1,0 +1,449 @@
+<div class="panel-header panel-header-sm"></div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="card-title">
+              <i class="now-ui-icons education_hat"></i> Gestión de Estudiantes
+            </h4>
+            <p class="card-category">Tabla responsiva de estudiantes de voleibol</p>
+          </div>
+          <button class="btn btn-sm btn-primary" (click)="abrirModalCrear()">
+            <i class="now-ui-icons ui-1_simple-add"></i> Crear Estudiante
+          </button>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="card-body filtros-section">
+          <div class="row">
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons ui-1_zoom-bold"></i> Nombre</label>
+                <input type="text" class="form-control" 
+                       placeholder="Buscar por nombre..."
+                       [(ngModel)]="filtroNombre"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons business_badge"></i> Documento</label>
+                <input type="text" class="form-control" 
+                       placeholder="Número..."
+                       [(ngModel)]="filtroDocumento"
+                       (ngModelChange)="aplicarFiltros()">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons location_pin"></i> Sede</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroSede"
+                        (ngModelChange)="aplicarFiltros()">
+                  <option value="">Todas las sedes</option>
+                  <option *ngFor="let sede of sedes" [value]="getSedeId(sede)">
+                    {{ sede.nombre || sede.nombreSede }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-6">
+              <div class="form-group">
+                <label><i class="now-ui-icons users_single-02"></i> Sexo</label>
+                <select class="form-control" 
+                        [(ngModel)]="filtroSexo"
+                        (ngModelChange)="aplicarFiltros()">
+                  <option value="">Todos</option>
+                  <option value="MASCULINO">Masculino</option>
+                  <option value="FEMENINO">Femenino</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-12">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-secondary btn-block" (click)="limpiarFiltros()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i> Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resumen -->
+          <div class="resumen-resultados" *ngIf="estudiantesFiltrados.length > 0">
+            <span class="badge badge-info">
+              {{ estudiantesFiltrados.length }} estudiante(s) encontrado(s)
+            </span>
+          </div>
+        </div>
+        
+        <!-- Loading state -->
+        <div *ngIf="cargando" class="text-center p-4">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card-body" *ngIf="!cargando">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="text-primary">
+                <tr>
+                  <th class="text-center" style="width: 10%;">Documento</th>
+                  <th style="width: 25%;">Nombre Completo</th>
+                  <th style="width: 20%;">Email</th>
+                  <th style="width: 20%;">Sede</th>
+                  <th style="width: 15%;">Teléfono</th>
+                  <th class="text-center" style="width: 10%;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let estudiante of estudiantesFiltrados">
+                  <td class="text-center">
+                    <strong>{{ estudiante.numeroDocumento }}</strong>
+                  </td>
+                  <td>
+                    {{ estudiante.nombreCompleto }}
+                  </td>
+                  <td>
+                    <small>{{ estudiante.correoEstudiante }}</small>
+                  </td>
+                  <td>
+                    <span class="badge badge-info">{{ estudiante.sede.nombre || estudiante.sede.nombreSede }}</span>
+                  </td>
+                  <td>
+                    {{ estudiante.celularEstudiante }}
+                  </td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-info mr-2" 
+                            (click)="abrirModalEditar(estudiante)"
+                            title="Ver/Editar detalles">
+                      <i class="now-ui-icons ui-2_settings-90"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" 
+                            (click)="eliminarEstudiante(estudiante.idEstudiante!, estudiante.nombreCompleto)"
+                            title="Eliminar">
+                      <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty state -->
+          <div *ngIf="estudiantesFiltrados.length === 0" class="alert alert-info text-center">
+            <i class="now-ui-icons ui-1_bell-53"></i>
+            {{ estudiantes.length === 0 ? 'No hay estudiantes registrados. Crea uno nuevo para comenzar.' : 'No se encontraron estudiantes con los filtros aplicados.' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar estudiante -->
+<ng-template #modalContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ editando ? 'Editar Estudiante' : 'Crear Nuevo Estudiante' }}
+    </h5>
+    <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body">
+    <form [formGroup]="formulario">
+      <!-- Primera fila -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="nombreCompleto">Nombre Completo *</label>
+            <input type="text" class="form-control" id="nombreCompleto" 
+                   formControlName="nombreCompleto"
+                   [class.is-invalid]="formulario.get('nombreCompleto')?.invalid && formulario.get('nombreCompleto')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('nombreCompleto')?.errors?.['required']">
+              El nombre es requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="numeroDocumento">Número Documento *</label>
+            <input type="text" class="form-control" id="numeroDocumento" 
+                   formControlName="numeroDocumento"
+                   [class.is-invalid]="formulario.get('numeroDocumento')?.invalid && formulario.get('numeroDocumento')?.touched">
+          </div>
+        </div>
+      </div>
+
+      <!-- Segunda fila -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="tipoDocumento">Tipo Documento *</label>
+            <select class="form-control" id="tipoDocumento" formControlName="tipoDocumento">
+              <option value="CC">Cédula de Ciudadanía</option>
+              <option value="RC">Registro Civil</option>
+              <option value="TI">Tarjeta de Identidad</option>
+              <option value="PASAPORTE">Pasaporte</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha Nacimiento *</label>
+            <input type="date" class="form-control" id="fechaNacimiento" formControlName="fechaNacimiento">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="sexo">Sexo *</label>
+            <select class="form-control" id="sexo" formControlName="sexo">
+              <option>MASCULINO</option>
+              <option>FEMENINO</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tercera fila - Contacto -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="correoEstudiante">Email *</label>
+            <input type="email" class="form-control" id="correoEstudiante" 
+                   formControlName="correoEstudiante"
+                   [class.is-invalid]="formulario.get('correoEstudiante')?.invalid && formulario.get('correoEstudiante')?.touched">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="celularEstudiante">Celular *</label>
+            <input type="text" class="form-control" id="celularEstudiante" 
+                   placeholder="3001234567"
+                   formControlName="celularEstudiante"
+                   [class.is-invalid]="formulario.get('celularEstudiante')?.invalid && formulario.get('celularEstudiante')?.touched">
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuarta fila - Dirección -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="direccionResidencia">Dirección Residencia *</label>
+            <input type="text" class="form-control" id="direccionResidencia" formControlName="direccionResidencia">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="barrio">Barrio *</label>
+            <input type="text" class="form-control" id="barrio" formControlName="barrio">
+          </div>
+        </div>
+      </div>
+
+      <!-- Quinta fila - Sede y Educación -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="sedeId">Campus/Sede *</label>
+            <select class="form-control" id="sedeId" formControlName="sedeId">
+              <option value="">- Selecciona una sede -</option>
+              <option *ngFor="let sede of sedes" [value]="sede.idSede">{{ sede.nombre || sede.nombreSede }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="institucionEducativa">Institución Educativa *</label>
+            <input type="text" class="form-control" id="institucionEducativa" formControlName="institucionEducativa">
+          </div>
+        </div>
+      </div>
+
+      <!-- Sexta fila - Educación -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="jornada">Jornada *</label>
+            <select class="form-control" id="jornada" formControlName="jornada">
+              <option>MAÑANA</option>
+              <option>TARDE</option>
+              <option>NOCHE</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="gradoActual">Grado Actual *</label>
+            <input type="number" class="form-control" id="gradoActual" formControlName="gradoActual" min="1" max="11">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="eps">EPS *</label>
+            <input type="text" class="form-control" id="eps" formControlName="eps">
+          </div>
+        </div>
+      </div>
+
+      <!-- Séptima fila - Tutor -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="nombreTutor">Nombre Tutor *</label>
+            <input type="text" class="form-control" id="nombreTutor" formControlName="nombreTutor">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="parentescoTutor">Parentesco Tutor *</label>
+            <select class="form-control" id="parentescoTutor" formControlName="parentescoTutor">
+              <option>Padre</option>
+              <option>Madre</option>
+              <option>Abuelo</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Octava fila - Tutor Contacto -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="documentoTutor">Documento Tutor *</label>
+            <input type="text" class="form-control" id="documentoTutor" formControlName="documentoTutor">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="telefonoTutor">Teléfono Tutor *</label>
+            <input type="text" class="form-control" id="telefonoTutor" placeholder="3001234567" formControlName="telefonoTutor">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="correoTutor">Email Tutor *</label>
+            <input type="email" class="form-control" id="correoTutor" formControlName="correoTutor">
+          </div>
+        </div>
+      </div>
+
+      <!-- Novena fila - Voleibol -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="posicionPreferida">Posición Preferida *</label>
+            <select class="form-control" id="posicionPreferida" formControlName="posicionPreferida">
+              <option>Colocador</option>
+              <option>Pasador</option>
+              <option>Rematador</option>
+              <option>Libero</option>
+              <option>Central</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="nivelActual">Nivel Actual *</label>
+            <select class="form-control" id="nivelActual" formControlName="nivelActual">
+              <option>PRINCIPIANTE</option>
+              <option>INTERMEDIO</option>
+              <option>AVANZADO</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Décima fila - Datos Deportivos -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="dominancia">Dominancia *</label>
+            <select class="form-control" id="dominancia" formControlName="dominancia">
+              <option>DERECHA</option>
+              <option>IZQUIERDA</option>
+              <option>AMBAS</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="tipoSangre">Tipo Sangre *</label>
+            <select class="form-control" id="tipoSangre" formControlName="tipoSangre">
+              <option>O+</option>
+              <option>O-</option>
+              <option>A+</option>
+              <option>A-</option>
+              <option>B+</option>
+              <option>B-</option>
+              <option>AB+</option>
+              <option>AB-</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="nombreCamiseta">Nombre Camiseta *</label>
+            <input type="text" class="form-control" id="nombreCamiseta" formControlName="nombreCamiseta">
+          </div>
+        </div>
+      </div>
+
+      <!-- Undécima fila - Número Camiseta -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="numeroCamiseta">Número Camiseta *</label>
+            <input type="number" class="form-control" id="numeroCamiseta" formControlName="numeroCamiseta" min="0" max="99">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="estado">
+              <input type="checkbox" id="estado" formControlName="estado" class="mr-2">
+              Activo
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="guardarEstudiante()">
+      {{ editando ? 'Actualizar' : 'Crear' }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal de confirmación para eliminar -->
+<ng-template #modalConfirmacion let-modal>
+  <div class="modal-header" style="background-color: #dc3545; border-bottom: 1px solid #dc3545;">
+    <h5 class="modal-title text-white">
+      <i class="now-ui-icons ui-1_simple-remove" style="margin-right: 8px;"></i>{{ titulo }}
+    </h5>
+    <button type="button" class="close text-white" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  <div class="modal-body" style="padding: 20px;">
+    <p class="mb-0">{{ mensaje }}</p>
+  </div>
+  
+  <div class="modal-footer" style="border-top: 1px solid #e3e3e3;">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close(true)">
+      <i class="now-ui-icons ui-1_simple-remove"></i> {{ nombreBoton }}
+    </button>
+  </div>
+</ng-template>

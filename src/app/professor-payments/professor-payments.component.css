@@ -1,0 +1,456 @@
+.card-header {
+  padding: 1.5rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Filtros */
+.filtros-section {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 1rem 1.5rem;
+}
+
+.filtros-section .form-group {
+  margin-bottom: 0.5rem;
+}
+
+.filtros-section label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.filtros-section .form-control {
+  font-size: 13px;
+  padding: 0.5rem 0.75rem;
+}
+
+.fecha-input {
+  font-weight: 600;
+  border-color: rgba(26, 26, 26, 0.8);
+}
+
+.btn-group-filtros {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-group-filtros .btn {
+  flex: 1;
+}
+
+/* Resumen del reporte */
+.resumen-reporte {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.resumen-header {
+  margin-bottom: 1rem;
+}
+
+.resumen-header h5 {
+  margin: 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon i {
+  font-size: 22px;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+/* Estado resumen */
+.estado-resumen {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+/* Acciones rápidas */
+.acciones-rapidas {
+  padding: 0.75rem 1.5rem;
+  background-color: #fff;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+/* Toggle de estado */
+.estado-toggle .btn {
+  min-width: 110px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.estado-toggle .btn-success {
+  background-color: #18ce0f;
+  border-color: #18ce0f;
+}
+
+.estado-toggle .btn-warning {
+  background-color: #FFB236;
+  border-color: #FFB236;
+}
+
+.btn-outline-warning {
+  border-color: #FFB236;
+  color: #FFB236;
+}
+
+.btn-outline-warning:hover {
+  background-color: #FFB236;
+  color: white;
+}
+
+/* Tabla */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 100%;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  font-weight: 600;
+  border-bottom: 2px solid rgba(26, 26, 26, 0.8);
+  white-space: nowrap;
+  color: rgba(26, 26, 26, 0.8);
+  background-color: #f9f9f9;
+  padding: 1rem;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(249, 99, 50, 0.08);
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.profesor-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profesor-info i {
+  color: #888;
+}
+
+.profesor-info .nombre {
+  font-weight: 500;
+}
+
+.salario {
+  color: #666;
+}
+
+.total-pagar {
+  font-weight: 700;
+  color: #18ce0f;
+  font-size: 1.1em;
+}
+
+.total-pagar.sin-pago {
+  color: #888;
+  font-weight: normal;
+}
+
+/* Fila de totales */
+.fila-total {
+  background-color: #f5f5f5;
+  font-size: 1.05em;
+}
+
+.fila-total td {
+  padding: 1rem;
+  border-top: 2px solid #333;
+}
+
+.total-general {
+  color: rgba(26, 26, 26, 0.8);
+  font-size: 1.2em;
+}
+
+/* Badges */
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-success {
+  background-color: #18ce0f;
+  color: white;
+}
+
+.badge-warning {
+  background-color: #FFB236;
+  color: white;
+}
+
+.badge-secondary {
+  background-color: #888888;
+  color: white;
+}
+
+.badge-light {
+  background-color: #e9ecef;
+  color: #666;
+}
+
+.badge-info {
+  background-color: #2CA8FF;
+  color: white;
+}
+
+/* Mensaje inicial */
+.mensaje-inicial {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #888;
+}
+
+.icono-grande {
+  font-size: 4rem;
+  color: #ddd;
+  margin-bottom: 1rem;
+}
+
+.icono-grande i {
+  font-size: 80px;
+}
+
+.mensaje-inicial h5 {
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.mensaje-inicial p {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Botones */
+.btn-outline-secondary {
+  border-color: #888;
+  color: #888;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #888;
+  color: white;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.alert {
+  margin-bottom: 0;
+  padding: 1.5rem;
+}
+
+.spinner-border {
+  color: rgba(26, 26, 26, 0.8);
+}
+
+/* Print styles */
+@media print {
+  .filtros-section,
+  .header-actions,
+  .btn-group-filtros {
+    display: none !important;
+  }
+  
+  .resumen-reporte {
+    background: #f5f5f5 !important;
+    color: #333 !important;
+    -webkit-print-color-adjust: exact;
+  }
+  
+  .stat-card {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-actions {
+    width: 100%;
+  }
+  
+  .header-actions .btn {
+    flex: 1;
+  }
+  
+  .filtros-section .row > div {
+    margin-bottom: 0.75rem;
+  }
+  
+  .btn-group-filtros {
+    flex-direction: column;
+  }
+  
+  .btn-group-filtros .btn {
+    width: 100%;
+  }
+  
+  .stat-value {
+    font-size: 1.2rem;
+  }
+  
+  .table thead th,
+  .table tbody td {
+    padding: 0.5rem 0.25rem;
+    font-size: 12px;
+  }
+  
+  .profesor-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .profesor-info i {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .resumen-reporte {
+    padding: 1rem;
+  }
+  
+  .stat-card {
+    padding: 0.75rem;
+  }
+  
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .stat-icon i {
+    font-size: 18px;
+  }
+  
+  .stat-value {
+    font-size: 1rem;
+  }
+  
+  .table thead th,
+  .table tbody td {
+    padding: 0.4rem 0.2rem;
+    font-size: 11px;
+  }
+  
+  .badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}
