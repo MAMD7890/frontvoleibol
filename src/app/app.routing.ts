@@ -19,17 +19,30 @@ const routes: Routes =[
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
+  // Rutas de estudiante
+  { 
+    path: 'student/plans', 
+    component: PlanSelectComponent, 
+    canActivate: [AuthGuard, RoleGuard], 
+    data: { roles: ['STUDENT'] } 
+  },
+  { 
+    path: 'student/billing', 
+    component: BillingComponent, 
+    canActivate: [AuthGuard, RoleGuard], 
+    data: { roles: ['STUDENT'] } 
+  },
+  // Rutas de profesor y admin (comparten el layout pero el sidebar filtra por rol)
   {
     path: '',
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
-        {
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN', 'USER', 'PROFESOR'] },
+    children: [{
       path: '',
       loadChildren: () => import('./layouts/admin-layout/admin-layout.module').then(x=>x.AdminLayoutModule)
-  }]},
-  { path: 'student/plans', component: PlanSelectComponent, canActivate: [RoleGuard], data: { roles: ['STUDENT'] } },
-  { path: 'student/billing', component: BillingComponent, canActivate: [RoleGuard], data: { roles: ['STUDENT'] } },
+    }]
+  },
   {
     path: '**',
     redirectTo: 'auth/login'

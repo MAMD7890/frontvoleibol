@@ -1,271 +1,1142 @@
 /* ============================================
-   GALACTICOS - Custom Theme Styles
-   Colores: Blanco, Negro, Dorado
-   Botones: Verde, Rojo, Azul
+   CLUB DE VOLEIBOL - Custom Theme Styles
+   Paleta basada en el escudo del club
    ============================================ */
 
-/* Variables CSS personalizadas */
+/* Variables CSS personalizadas - Nueva Paleta Azul Cielo */
 :root {
-  --galacticos-black: #1a1a1a;
-  --galacticos-white: #FFFFFF;
-  --galacticos-gold: #D4AF37;
-  --galacticos-gold-light: #F4E4BC;
-  --galacticos-gold-dark: #B8960C;
-  --galacticos-green: #28a745;
-  --galacticos-red: #dc3545;
-  --galacticos-blue: #007bff;
+  /* Colores Primarios - Azul Cielo */
+  --blue-primary: #64B5F6;
+  --red-primary: #E53935;
+  --white: #FFFFFF;
+  
+  /* Colores Secundarios - Azul Cielo Suave */
+  --blue-dark: #42A5F5;
+  --red-dark: #C62828;
+  --gold-accent: #FFC107;
+  
+  /* Colores de Soporte */
+  --gray-dark: #212121;
+  --gray-medium: #757575;
+  --gray-light: #F8FBFF;
+  --blue-light: #E3F2FD;
+  
+  /* Sombras - Suaves */
+  --shadow-sm: 0 2px 8px rgba(100, 181, 246, 0.1);
+  --shadow-md: 0 4px 16px rgba(100, 181, 246, 0.12);
+  --shadow-lg: 0 8px 32px rgba(100, 181, 246, 0.15);
+  --shadow-glow-blue: 0 4px 20px rgba(100, 181, 246, 0.3);
+  --shadow-glow-red: 0 4px 20px rgba(229, 57, 53, 0.4);
+  
+  /* Degradados - Azul Cielo Suave */
+  --gradient-primary: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
+  --gradient-secondary: linear-gradient(135deg, #E53935 0%, #C62828 100%);
+  --gradient-header: linear-gradient(135deg, #42A5F5 0%, #64B5F6 50%, #90CAF9 100%);
+  --gradient-sidebar: linear-gradient(180deg, #42A5F5 0%, #5CB8FF 50%, #64B5F6 100%);
+  --gradient-accent: linear-gradient(135deg, #FFC107 0%, #FFB300 100%);
 }
 
-/* Fondo general del panel principal */
+/* Fondo general del panel principal - Azul cielo muy suave */
 .main-panel {
-  background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%) !important;
-}
-
-/* Encabezados con estilo dorado */
-.card .card-header {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
-  color: #D4AF37 !important;
-  border-bottom: 2px solid #D4AF37 !important;
-}
-
-.card .card-header .card-title {
-  color: #D4AF37 !important;
-}
-
-.card .card-header .card-category {
-  color: rgba(255, 255, 255, 0.7) !important;
-}
-
-/* Tablas con estilo Galacticos - Negro con opacidad 80% */
-.table thead th {
-  background-color: rgba(26, 26, 26, 0.8) !important;
-  color: #FFFFFF !important;
-  border-bottom: 2px solid rgba(26, 26, 26, 0.8) !important;
-}
-
-/* Sobreescribir text-primary en tablas para usar negro */
-.table thead.text-primary th {
-  color: rgba(26, 26, 26, 0.8) !important;
-}
-
-.table thead.text-primary {
-  border-bottom: 2px solid rgba(26, 26, 26, 0.8) !important;
-}
-
-/* Línea debajo de encabezados de tabla */
-.table > thead > tr > th {
-  border-bottom: 2px solid rgba(26, 26, 26, 0.8) !important;
-  color: rgba(26, 26, 26, 0.8) !important;
-  font-weight: 600;
-}
-
-.table tbody tr:hover {
-  background-color: rgba(26, 26, 26, 0.05) !important;
-}
-
-/* Botones personalizados */
-.btn-primary {
-  background-color: #D4AF37 !important;
-  border-color: #D4AF37 !important;
-  color: #1a1a1a !important;
-}
-
-.btn-primary:hover {
-  background-color: #B8960C !important;
-  border-color: #B8960C !important;
-}
-
-.btn-success {
-  background-color: #28a745 !important;
-  border-color: #28a745 !important;
-}
-
-.btn-success:hover {
-  background-color: #218838 !important;
-  border-color: #1e7e34 !important;
-}
-
-.btn-danger {
-  background-color: #dc3545 !important;
-  border-color: #dc3545 !important;
-}
-
-.btn-danger:hover {
-  background-color: #c82333 !important;
-  border-color: #bd2130 !important;
-}
-
-.btn-info {
-  background-color: #007bff !important;
-  border-color: #007bff !important;
-}
-
-.btn-info:hover {
-  background-color: #0069d9 !important;
-  border-color: #0062cc !important;
-}
-
-/* Sidebar con estilo negro y dorado */
-.sidebar:after,
-.off-canvas-sidebar:after {
-  background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%) !important;
-}
-
-.sidebar .logo .simple-text {
-  color: #D4AF37 !important;
-}
-
-.sidebar .nav li.active > a {
-  background-color: #D4AF37 !important;
-  color: #1a1a1a !important;
-}
-
-.sidebar .nav li.active > a i {
-  color: #1a1a1a !important;
-}
-
-.sidebar .nav li.active > a p {
-  color: #1a1a1a !important;
-}
-
-/* Iconos dorados en el sidebar */
-.sidebar .logo-img i {
-  color: #D4AF37 !important;
-}
-
-/* Links y elementos interactivos */
-a {
-  color: #D4AF37;
-}
-
-a:hover {
-  color: #B8960C;
-}
-
-/* Navbar superior */
-.navbar {
-  background-color: #FFFFFF !important;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.3) !important;
-}
-
-/* Cards con borde dorado sutil */
-.card {
-  border: 1px solid rgba(212, 175, 55, 0.2) !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Inputs con estilo */
-.form-control:focus {
-  border-color: #D4AF37 !important;
-  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25) !important;
-}
-
-/* Badges y etiquetas */
-.badge-primary {
-  background-color: #D4AF37 !important;
-  color: #1a1a1a !important;
-}
-
-/* Paginación */
-.page-item.active .page-link {
-  background-color: #D4AF37 !important;
-  border-color: #D4AF37 !important;
-  color: #1a1a1a !important;
-}
-
-.page-link {
-  color: #D4AF37 !important;
-}
-
-.page-link:hover {
-  color: #B8960C !important;
-}
-
-/* Dropdown menus */
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: rgba(212, 175, 55, 0.1) !important;
-  color: #D4AF37 !important;
-}
-
-/* Scrollbar personalizado */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #D4AF37;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #B8960C;
-}
-
-/* Footer */
-.footer {
-  background-color: #1a1a1a !important;
-  color: #FFFFFF !important;
-}
-
-.footer a {
-  color: #D4AF37 !important;
+  background: linear-gradient(180deg, #F0F7FF 0%, #FAFCFF 100%) !important;
 }
 
 /* ============================================
-   SOBREESCRIBIR COLOR PRIMARIO (NARANJA -> NEGRO)
+   ENCABEZADOS DE TARJETAS - Azul cielo suave
    ============================================ */
+.card .card-header {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%) !important;
+  color: #37474F !important;
+  border-bottom: 2px solid rgba(100, 181, 246, 0.3) !important;
+  box-shadow: 0 2px 6px rgba(100, 181, 246, 0.1);
+  border-radius: 12px 12px 0 0 !important;
+}
 
-/* Text primary - Cambiar naranja por negro */
+.card .card-header .card-title {
+  color: #37474F !important;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.card .card-header .card-category {
+  color: #546E7A !important;
+}
+
+/* ============================================
+   TABLAS - Diseño Simple
+   ============================================ */
+.table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(200, 215, 230, 0.5);
+  margin-bottom: 1rem;
+}
+
+.table thead th {
+  background: #FAFCFF !important;
+  color: #455A64 !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(200, 215, 230, 0.6) !important;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+  padding: 14px 16px !important;
+  position: relative;
+}
+
+.table thead th:first-child {
+  border-radius: 0;
+}
+
+.table thead th:last-child {
+  border-radius: 0;
+}
+
+.table thead.text-primary th {
+  color: #455A64 !important;
+  background: #FAFCFF !important;
+}
+
+.table thead.text-primary {
+  border: none !important;
+}
+
+.table > thead > tr > th {
+  border: none !important;
+  border-bottom: 1px solid rgba(200, 215, 230, 0.6) !important;
+  color: #455A64 !important;
+  font-weight: 600;
+}
+
+.table tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(200, 215, 230, 0.4);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(100, 181, 246, 0.06) !important;
+  transform: none;
+  box-shadow: none;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: rgba(240, 247, 255, 0.5);
+}
+
+.table tbody tr:nth-child(even):hover {
+  background-color: rgba(100, 181, 246, 0.08) !important;
+}
+
+.table tbody td {
+  padding: 14px 16px !important;
+  vertical-align: middle;
+  border: none !important;
+  color: #424242;
+  font-size: 0.9rem;
+}
+
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(200, 215, 230, 0.5);
+}
+
+/* Card con tabla - sin padding extra */
+.card .card-body .table {
+  margin: -15px;
+  width: calc(100% + 30px);
+}
+
+.card .card-body .table-responsive {
+  margin: -15px;
+  width: calc(100% + 30px);
+}
+
+.card .card-body .table-responsive .table {
+  margin: 0;
+  width: 100%;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+/* Botón Primario - Azul Principal */
+.btn-primary {
+  background: var(--gradient-primary) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%) !important;
+  box-shadow: var(--shadow-glow-blue) !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Secundario/Danger - Rojo Principal */
+.btn-danger {
+  background: var(--gradient-secondary) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #C62828 0%, #B71C1C 100%) !important;
+  box-shadow: var(--shadow-glow-red) !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Success - Verde */
+.btn-success {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%) !important;
+  box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Info - Azul Claro */
+.btn-info {
+  background: linear-gradient(135deg, #29B6F6 0%, #0288D1 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-info:hover {
+  background: linear-gradient(135deg, #0288D1 0%, #01579B 100%) !important;
+  box-shadow: 0 4px 20px rgba(2, 136, 209, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Warning - Dorado/Amarillo */
+.btn-warning {
+  background: var(--gradient-accent) !important;
+  border: none !important;
+  color: var(--gray-dark) !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #FFB300 0%, #FF8F00 100%) !important;
+  box-shadow: 0 4px 20px rgba(255, 193, 7, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Default/Secondary */
+.btn-default,
+.btn-secondary {
+  background: linear-gradient(135deg, #78909C 0%, #546E7A 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+}
+
+.btn-default:hover,
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #546E7A 0%, #37474F 100%) !important;
+  transform: translateY(-2px);
+}
+
+/* Botones Outline - con fondo sólido y texto blanco */
+.btn-outline-success {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-outline-success:hover {
+  background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+  background: linear-gradient(135deg, #78909C 0%, #546E7A 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-outline-secondary:hover {
+  background: linear-gradient(135deg, #546E7A 0%, #37474F 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+}
+
+.btn-outline-danger {
+  background: linear-gradient(135deg, #E53935 0%, #C62828 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-outline-danger:hover {
+  background: linear-gradient(135deg, #C62828 0%, #B71C1C 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+  background: linear-gradient(135deg, #1E88E5 0%, #0D47A1 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background: linear-gradient(135deg, #0D47A1 0%, #0A3A7A 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+}
+
+.btn-outline-warning {
+  background: linear-gradient(135deg, #FFC107 0%, #FFB300 100%) !important;
+  border: none !important;
+  color: #212121 !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease !important;
+  font-weight: 600;
+}
+
+.btn-outline-warning:hover {
+  background: linear-gradient(135deg, #FFB300 0%, #FF8F00 100%) !important;
+  color: #212121 !important;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   SIDEBAR - Azul Cielo Claro
+   ============================================ */
+.sidebar,
+.off-canvas-sidebar {
+  background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%) !important;
+}
+
+.sidebar:after,
+.off-canvas-sidebar:after {
+  background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%) !important;
+}
+
+.sidebar:before,
+.off-canvas-sidebar:before {
+  background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%) !important;
+}
+
+.sidebar .sidebar-wrapper,
+.off-canvas-sidebar .sidebar-wrapper {
+  background: transparent !important;
+}
+
+.sidebar .logo {
+  border-bottom: 1px solid rgba(66, 165, 245, 0.3) !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.sidebar .logo .simple-text {
+  color: #212121 !important;
+  font-weight: 700;
+  text-shadow: none;
+}
+
+.sidebar .logo a.logo-mini {
+  background: transparent !important;
+}
+
+.sidebar .nav li > a {
+  transition: all 0.3s ease !important;
+  color: #212121 !important;
+}
+
+.sidebar .nav li.active > a {
+  background: linear-gradient(90deg, #42A5F5 0%, #64B5F6 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+  border-radius: 8px !important;
+}
+
+.sidebar .nav li.active > a i,
+.sidebar .nav li.active > a p {
+  color: #FFFFFF !important;
+  font-weight: 600;
+}
+
+.sidebar .nav li:hover:not(.active) > a {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border-left: 3px solid #42A5F5;
+}
+
+.sidebar .nav li > a i {
+  color: #212121 !important;
+}
+
+.sidebar .nav li > a p {
+  color: #212121 !important;
+}
+
+/* Logo icon in sidebar */
+.sidebar .logo-img i {
+  color: #212121 !important;
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+  background: linear-gradient(135deg, #FAFCFF 0%, #F0F7FF 100%) !important;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(100, 181, 246, 0.08) !important;
+}
+
+.navbar .navbar-brand {
+  color: #5C6BC0 !important;
+  font-weight: 700;
+}
+
+.navbar .nav-link {
+  color: #546E7A !important;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #64B5F6 !important;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card {
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: all 0.3s ease !important;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg) !important;
+  transform: translateY(-3px);
+}
+
+/* ============================================
+   LINKS
+   ============================================ */
+a {
+  color: var(--blue-primary);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--blue-dark);
+}
+
+/* ============================================
+   INPUTS
+   ============================================ */
+.form-control:focus {
+  border-color: var(--blue-primary) !important;
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2) !important;
+}
+
+.form-control {
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-control:hover {
+  border-color: var(--blue-light);
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+.badge-primary {
+  background: var(--gradient-primary) !important;
+  color: #FFFFFF !important;
+}
+
+.badge-danger {
+  background: var(--gradient-secondary) !important;
+  color: #FFFFFF !important;
+}
+
+.badge-warning {
+  background: var(--gradient-accent) !important;
+  color: var(--gray-dark) !important;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%) !important;
+  color: #FFFFFF !important;
+}
+
+/* ============================================
+   PAGINACIÓN
+   ============================================ */
+.page-item.active .page-link {
+  background: var(--gradient-primary) !important;
+  border-color: var(--blue-primary) !important;
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.page-link {
+  color: var(--blue-primary) !important;
+  border-color: #E0E0E0;
+  transition: all 0.3s ease;
+}
+
+.page-link:hover {
+  color: var(--blue-dark) !important;
+  background-color: var(--blue-light) !important;
+  border-color: var(--blue-primary);
+}
+
+/* ============================================
+   DROPDOWNS
+   ============================================ */
+.dropdown-menu {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg) !important;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+  padding: 10px 20px;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: linear-gradient(90deg, var(--blue-light) 0%, rgba(187, 222, 251, 0.5) 100%) !important;
+  color: var(--blue-dark) !important;
+  padding-left: 25px;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-light);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--blue-primary) 0%, var(--blue-dark) 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--blue-dark) 0%, #072F70 100%);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  background: var(--gradient-header) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 -4px 16px rgba(13, 71, 161, 0.15);
+}
+
+.footer a {
+  color: var(--gold-accent) !important;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #FFD54F !important;
+}
+
+/* ============================================
+   TEXT COLORS
+   ============================================ */
 .text-primary {
-  color: rgba(26, 26, 26, 0.8) !important;
+  color: var(--blue-primary) !important;
 }
 
 a.text-primary:hover,
 a.text-primary:focus {
-  color: #1a1a1a !important;
+  color: var(--blue-dark) !important;
 }
 
-/* Links con color negro */
-a {
-  color: rgba(26, 26, 26, 0.8);
+.text-danger {
+  color: var(--red-primary) !important;
 }
 
-a:hover,
-a:focus {
-  color: #1a1a1a;
+.text-warning {
+  color: var(--gold-accent) !important;
 }
 
-/* Badges primarios */
-.badge-primary {
-  background-color: rgba(26, 26, 26, 0.8) !important;
+.text-muted {
+  color: var(--gray-medium) !important;
+}
+
+/* ============================================
+   NAV TABS
+   ============================================ */
+.nav-tabs .nav-link.active {
+  border-color: var(--blue-primary) !important;
+  color: var(--blue-primary) !important;
+  border-bottom: 3px solid var(--blue-primary);
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: var(--blue-light) !important;
+  background-color: rgba(187, 222, 251, 0.3);
+}
+
+/* ============================================
+   PROGRESS BARS
+   ============================================ */
+.progress {
+  background-color: var(--gray-light);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  background: var(--gradient-primary) !important;
+  border-radius: 10px;
+}
+
+.progress-bar.bg-success {
+  background: linear-gradient(90deg, #43A047 0%, #2E7D32 100%) !important;
+}
+
+.progress-bar.bg-danger {
+  background: var(--gradient-secondary) !important;
+}
+
+.progress-bar.bg-warning {
+  background: var(--gradient-accent) !important;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.alert-primary {
+  background: linear-gradient(135deg, rgba(30, 136, 229, 0.15) 0%, rgba(13, 71, 161, 0.1) 100%) !important;
+  border: 1px solid rgba(30, 136, 229, 0.3) !important;
+  color: var(--blue-dark) !important;
+  border-left: 4px solid var(--blue-primary);
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, rgba(229, 57, 53, 0.15) 0%, rgba(198, 40, 40, 0.1) 100%) !important;
+  border: 1px solid rgba(229, 57, 53, 0.3) !important;
+  color: var(--red-dark) !important;
+  border-left: 4px solid var(--red-primary);
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 179, 0, 0.15) 100%) !important;
+  border: 1px solid rgba(255, 193, 7, 0.4) !important;
+  color: #5D4037 !important;
+  border-left: 4px solid var(--gold-accent);
+}
+
+.alert-success {
+  background: linear-gradient(135deg, rgba(67, 160, 71, 0.15) 0%, rgba(46, 125, 50, 0.1) 100%) !important;
+  border: 1px solid rgba(67, 160, 71, 0.3) !important;
+  color: #1B5E20 !important;
+  border-left: 4px solid #43A047;
+}
+
+/* ============================================
+   PANEL HEADER
+   ============================================ */
+.panel-header {
+  background: var(--gradient-header) !important;
+  box-shadow: var(--shadow-lg);
+}
+
+.panel-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ============================================
+   MODALES
+   ============================================ */
+.modal-content {
+  border: none;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: var(--gradient-header);
+  color: #FFFFFF;
+  border-bottom: 3px solid var(--gold-accent);
+}
+
+.modal-header .modal-title {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.modal-header .close {
+  color: #FFFFFF;
+  opacity: 0.8;
+}
+
+.modal-header .close:hover {
+  opacity: 1;
+}
+
+/* ============================================
+   TOOLTIPS
+   ============================================ */
+.tooltip .tooltip-inner {
+  background: var(--gradient-primary);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+}
+
+.bs-tooltip-top .arrow::before,
+.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  border-top-color: var(--blue-primary);
+}
+
+/* ============================================
+   UTILIDADES ADICIONALES
+   ============================================ */
+.bg-primary-gradient {
+  background: var(--gradient-primary) !important;
+}
+
+.bg-secondary-gradient {
+  background: var(--gradient-secondary) !important;
+}
+
+.bg-accent-gradient {
+  background: var(--gradient-accent) !important;
+}
+
+.shadow-glow-blue {
+  box-shadow: var(--shadow-glow-blue) !important;
+}
+
+.shadow-glow-red {
+  box-shadow: var(--shadow-glow-red) !important;
+}
+
+/* Efecto de brillo sutil en hover para elementos interactivos */
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: var(--shadow-glow-blue);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   OVERRIDE FORZADO - SIDEBAR AZUL CLARO
+   ============================================ */
+.sidebar[data-color="sky"]:after,
+.sidebar[data-color="blue"]:after,
+.sidebar[data-color="green"]:after,
+.sidebar[data-color="orange"]:after,
+.sidebar[data-color="red"]:after,
+.sidebar[data-color="black"]:after,
+.sidebar[data-color="yellow"]:after,
+.sidebar:after {
+  background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%) !important;
+}
+
+.sidebar[data-color="sky"] .nav li.active > a,
+.sidebar[data-color] .nav li.active > a,
+.sidebar .nav li.active > a {
+  background: linear-gradient(90deg, #42A5F5 0%, #64B5F6 100%) !important;
   color: #FFFFFF !important;
 }
 
-/* Nav tabs activos */
-.nav-tabs .nav-link.active {
-  border-color: rgba(26, 26, 26, 0.8) !important;
-  color: rgba(26, 26, 26, 0.8) !important;
+.sidebar[data-color="sky"] .nav li > a i,
+.sidebar[data-color="sky"] .nav li > a p,
+.sidebar[data-color] .nav li > a i,
+.sidebar[data-color] .nav li > a p,
+.sidebar .nav li > a i,
+.sidebar .nav li > a p {
+  color: #212121 !important;
 }
 
-/* Inputs focus */
-.form-control:focus {
-  border-color: rgba(26, 26, 26, 0.8) !important;
-  box-shadow: 0 0 0 0.2rem rgba(26, 26, 26, 0.25) !important;
+.sidebar[data-color="sky"] .nav li.active > a i,
+.sidebar[data-color="sky"] .nav li.active > a p,
+.sidebar[data-color] .nav li.active > a i,
+.sidebar[data-color] .nav li.active > a p,
+.sidebar .nav li.active > a i,
+.sidebar .nav li.active > a p {
+  color: #FFFFFF !important;
 }
 
-/* Progress bars */
-.progress-bar {
-  background-color: rgba(26, 26, 26, 0.8) !important;
+/* Logo y texto del sidebar */
+.sidebar .logo .simple-text,
+.sidebar .logo a.logo-normal,
+.sidebar[data-color="sky"] .logo .simple-text,
+.sidebar[data-color="sky"] .logo a.logo-normal {
+  color: #212121 !important;
+  font-weight: 700;
 }
 
-/* Alerts primarios */
-.alert-primary {
-  background-color: rgba(26, 26, 26, 0.1) !important;
-  border-color: rgba(26, 26, 26, 0.3) !important;
-  color: #1a1a1a !important;
+/* ============================================
+   OVERRIDE FORZADO - TABLAS SUTILES GLOBALES
+   ============================================ */
+table,
+.table,
+table.table,
+.card table,
+.card .table,
+.card-body table,
+.card-body .table {
+  border: 1px solid rgba(200, 215, 230, 0.4) !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+table thead th,
+.table thead th,
+table.table thead th,
+.card table thead th,
+.card .table thead th {
+  background: #FAFCFF !important;
+  color: #546E7A !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(200, 215, 230, 0.5) !important;
+  font-weight: 600;
+}
+
+table tbody tr,
+.table tbody tr,
+table.table tbody tr,
+.card table tbody tr {
+  border-bottom: 1px solid rgba(200, 215, 230, 0.3) !important;
+}
+
+table tbody tr:last-child,
+.table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+table tbody td,
+.table tbody td,
+table.table tbody td,
+.card table tbody td {
+  border: none !important;
+  color: #546E7A;
+}
+
+table tbody tr:hover,
+.table tbody tr:hover {
+  background-color: rgba(227, 242, 253, 0.5) !important;
+}
+
+table tbody tr:nth-child(even),
+.table tbody tr:nth-child(even) {
+  background-color: rgba(240, 247, 255, 0.4);
+}
+
+.table-responsive {
+  border: 1px solid rgba(200, 215, 230, 0.4) !important;
+  border-radius: 8px;
+}
+
+/* ============================================
+   OVERRIDE - NAVBAR CLARO
+   ============================================ */
+.navbar,
+nav.navbar,
+.navbar.navbar-transparent {
+  background: linear-gradient(135deg, #FAFCFF 0%, #F0F7FF 100%) !important;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2) !important;
+  box-shadow: 0 1px 4px rgba(100, 181, 246, 0.08) !important;
+}
+
+.navbar .navbar-brand,
+.navbar .navbar-wrapper .navbar-toggle {
+  color: #42A5F5 !important;
+}
+
+.navbar .form-control {
+  background: rgba(227, 242, 253, 0.5) !important;
+  border: 1px solid rgba(100, 181, 246, 0.3) !important;
+  color: #455A64 !important;
+}
+
+.navbar .form-control::placeholder {
+  color: #90A4AE !important;
+}
+
+.navbar .input-group-addon,
+.navbar .input-group-text {
+  background: rgba(227, 242, 253, 0.5) !important;
+  border: 1px solid rgba(100, 181, 246, 0.3) !important;
+  color: #42A5F5 !important;
+}
+
+/* Panel header suave */
+.panel-header,
+.panel-header-lg,
+.panel-header-sm {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%) !important;
+}
+
+/* ============================================
+   FORZAR TEXTO OSCURO EN SIDEBAR - MÁXIMA PRIORIDAD
+   ============================================ */
+.sidebar .nav li a,
+.sidebar .nav li a p,
+.sidebar .nav li a i,
+.sidebar .sidebar-wrapper .nav li a,
+.sidebar .sidebar-wrapper .nav li a p,
+.sidebar .sidebar-wrapper .nav li a i,
+.sidebar-wrapper .nav li a,
+.sidebar-wrapper .nav li a p,
+.sidebar-wrapper .nav li a i,
+.off-canvas-sidebar .nav li a,
+.off-canvas-sidebar .nav li a p,
+.off-canvas-sidebar .nav li a i {
+  color: #333333 !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+}
+
+.sidebar .nav li.active a,
+.sidebar .nav li.active a p,
+.sidebar .nav li.active a i,
+.sidebar .sidebar-wrapper .nav li.active a,
+.sidebar .sidebar-wrapper .nav li.active a p,
+.sidebar .sidebar-wrapper .nav li.active a i {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.sidebar .logo .simple-text,
+.sidebar .logo a.logo-normal,
+.sidebar .logo-normal,
+.off-canvas-sidebar .logo .simple-text {
+  color: #333333 !important;
+  font-weight: 800 !important;
+  opacity: 1 !important;
+}
+
+/* ============================================
+   PANEL HEADER - AZUL CIELO (Zona del gráfico)
+   ============================================ */
+.panel-header,
+.panel-header-sm,
+.panel-header-lg,
+div.panel-header,
+div.panel-header-lg,
+div.panel-header-sm {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%) !important;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.panel-header::before,
+.panel-header-lg::before,
+.panel-header-sm::before {
+  background: none !important;
+}
+
+.panel-header .header .title {
+  color: #333333 !important;
+}
+
+.panel-header .header .category {
+  color: #546E7A !important;
+}
+
+/* ============================================
+   NAVBAR FORZADO - AZUL CIELO CLARO
+   ============================================ */
+.navbar,
+nav.navbar,
+.navbar.navbar-transparent,
+.navbar.bg-primary,
+.navbar.navbar-absolute,
+.navbar.fixed-top {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%) !important;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(100, 181, 246, 0.15) !important;
+}
+
+.navbar .navbar-brand,
+.navbar a.navbar-brand {
+  color: #333333 !important;
+  font-weight: 600 !important;
+}
+
+.navbar .navbar-toggler-bar,
+.navbar .navbar-toggler-bar.bar1,
+.navbar .navbar-toggler-bar.bar2,
+.navbar .navbar-toggler-bar.bar3 {
+  background: #333333 !important;
+}
+
+.navbar .nav-link,
+.navbar .navbar-nav .nav-link {
+  color: #333333 !important;
+}
+
+.navbar .user-name-nav {
+  color: #333333 !important;
+}
+
+.navbar .dropdown-arrow {
+  color: #333333 !important;
+}
+
+.navbar .form-control {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(100, 181, 246, 0.4) !important;
+  color: #333333 !important;
+}
+
+.navbar .form-control::placeholder {
+  color: #757575 !important;
+}
+
+.navbar .input-group-text,
+.navbar .input-group-append .input-group-text {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(100, 181, 246, 0.4) !important;
+  color: #42A5F5 !important;
+}
+
+.navbar .input-group-text i {
+  color: #42A5F5 !important;
+}
+
+/* ============================================
+   BOTONES DE ACCIONES EN TABLAS
+   ============================================ */
+.btn-group-actions,
+.actions-container {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  gap: 10px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+}
+
+.btn-group-actions .btn,
+.actions-container .btn,
+table .btn.btn-sm {
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 38px !important;
+  width: 38px !important;
+  height: 38px !important;
+  margin: 0 !important;
+  transition: all 0.3s ease !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+}
+
+.btn-group-actions .btn i,
+.actions-container .btn i,
+table .btn.btn-sm i {
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+.btn-group-actions .btn-info,
+.actions-container .btn-info,
+table .btn.btn-sm.btn-info {
+  background: linear-gradient(135deg, #42A5F5, #64B5F6) !important;
+  border: none !important;
+  color: white !important;
+}
+
+.btn-group-actions .btn-info:hover,
+.actions-container .btn-info:hover,
+table .btn.btn-sm.btn-info:hover {
+  background: linear-gradient(135deg, #1E88E5, #42A5F5) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(66, 165, 245, 0.4) !important;
+}
+
+.btn-group-actions .btn-danger,
+.actions-container .btn-danger,
+table .btn.btn-sm.btn-danger {
+  background: linear-gradient(135deg, #E53935, #EF5350) !important;
+  border: none !important;
+  color: white !important;
+}
+
+.btn-group-actions .btn-danger:hover,
+.actions-container .btn-danger:hover,
+table .btn.btn-sm.btn-danger:hover {
+  background: linear-gradient(135deg, #C62828, #E53935) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4) !important;
+}
+
+/* Asegurar que la celda de acciones tenga suficiente ancho */
+table th:last-child,
+table td:last-child {
+  min-width: 120px;
+}
+
+/* Fix para celdas de acciones */
+td.text-center .btn-group-actions,
+td.text-center .actions-container {
+  display: inline-flex !important;
 }

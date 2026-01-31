@@ -1,1 +1,53 @@
-/* Sidebar Styles */
+/* Sidebar Styles - Texto Oscuro para Visibilidad */
+
+/* Forzar texto oscuro en todos los elementos del sidebar */
+:host ::ng-deep .sidebar .nav li > a,
+:host ::ng-deep .sidebar .nav li > a p,
+:host ::ng-deep .sidebar .nav li > a i,
+:host ::ng-deep .nav li > a,
+:host ::ng-deep .nav li > a p,
+:host ::ng-deep .nav li > a i {
+  color: #333333 !important;
+  font-weight: 600 !important;
+}
+
+:host ::ng-deep .sidebar .nav li.active > a,
+:host ::ng-deep .sidebar .nav li.active > a p,
+:host ::ng-deep .sidebar .nav li.active > a i,
+:host ::ng-deep .nav li.active > a,
+:host ::ng-deep .nav li.active > a p,
+:host ::ng-deep .nav li.active > a i {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+/* Logo GALACTICOS */
+:host ::ng-deep .logo .simple-text,
+:host ::ng-deep .logo a.logo-normal,
+.simple-text,
+.logo-normal {
+  color: #333333 !important;
+  font-weight: 800 !important;
+}
+
+/* Estilos directos */
+.nav li a {
+  color: #333333 !important;
+  font-weight: 600 !important;
+}
+
+.nav li a p {
+  color: #333333 !important;
+  font-weight: 600 !important;
+}
+
+.nav li a i {
+  color: #333333 !important;
+}
+
+.nav li.active a,
+.nav li.active a p,
+.nav li.active a i {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}

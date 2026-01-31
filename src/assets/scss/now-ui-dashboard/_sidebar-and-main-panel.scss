@@ -89,7 +89,7 @@
             > a{
                 margin: 10px 15px 0;
                 border-radius: $btn-round-radius;
-                color: $white-color;
+                color: #333333;
                 display: block;
                 text-decoration: none;
                 position: relative;
@@ -106,10 +106,10 @@
 
             &:hover:not(.active) > a,
             &:focus:not(.active) > a{
-                background-color: $opacity-1;
+                background-color: rgba(255,255,255,0.5);
 
                 i{
-                  color: $white-color;
+                  color: #333333;
                 }
             }
 
@@ -148,7 +148,7 @@
             line-height: 30px;
             width: 34px;
             text-align: center;
-            color: $opacity-5;
+            color: #333333;
             position: relative;
         }
     }
@@ -216,7 +216,7 @@
             float: left;
             font-size: 20px;
             margin: 10px 10px;
-            color: $white-color;
+            color: #333333;
             line-height: 20px;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
@@ -227,7 +227,7 @@
             display: block;
             white-space: nowrap;
             font-size: $font-size-large;
-            color: $white-color;
+            color: #333333;
             text-decoration: none;
             font-weight: $font-weight-normal;
             line-height: 30px;
@@ -287,6 +287,9 @@
     }
     &[data-color="gold"]{
       @include sidebar-color(#D4AF37);
+    }
+    &[data-color="sky"]{
+      @include sidebar-color(#90CAF9);
     }
 }
 
@@ -358,22 +361,22 @@
   height: 260px;
   padding-top: 80px;
   padding-bottom: 45px;
-  @include panel-gradient($black-color);
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%) !important;
   position: relative;
   overflow: hidden;
 
   .header{
     .title{
-      color: $white-color;
+      color: #333333;
     }
     .category{
       max-width: 600px;
-      color: $opacity-5;
+      color: #546E7A;
       margin: 0 auto;
       font-size: 13px;
 
       a{
-        color: $white-color;
+        color: #1565C0;
       }
     }
   }

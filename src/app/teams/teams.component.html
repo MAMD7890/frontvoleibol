@@ -124,16 +124,18 @@
                     </span>
                   </td>
                   <td class="text-center">
-                    <button class="btn btn-sm btn-info mr-2" 
-                            (click)="abrirModalEditar(equipo)"
-                            title="Ver/Editar detalles">
-                      <i class="now-ui-icons ui-2_settings-90"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" 
-                            (click)="eliminarEquipo(equipo)"
-                            title="Eliminar">
-                      <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </button>
+                    <div class="btn-group-actions">
+                      <button class="btn btn-sm btn-info" 
+                              (click)="abrirModalEditar(equipo)"
+                              title="Ver/Editar detalles">
+                        <i class="now-ui-icons ui-2_settings-90"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" 
+                              (click)="eliminarEquipo(equipo)"
+                              title="Eliminar">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>

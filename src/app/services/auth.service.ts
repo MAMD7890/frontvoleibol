@@ -17,8 +17,8 @@ import {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8081/api/auth';
-  private uploadUrl = 'http://localhost:8081/api/files';
+  private apiUrl = 'http://localhost:8080/api/auth';
+  private uploadUrl = 'http://localhost:8080/api/files';
   
   private currentUserSubject: BehaviorSubject<UserInfo | null>;
   public currentUser$: Observable<UserInfo | null>;
@@ -289,20 +289,37 @@ export class AuthService {
   private handleError(error: any): Observable<never> {
     let errorMessage = 'Ha ocurrido un error';
     
+    console.error('Error completo:', error);
+    
     if (error.error instanceof ErrorEvent) {
       // Error del cliente
       errorMessage = error.error.message;
     } else if (error.error?.message) {
       // Error del servidor con mensaje
       errorMessage = error.error.message;
+    } else if (error.error?.error) {
+      // Otro formato de error del servidor
+      errorMessage = error.error.error;
+    } else if (typeof error.error === 'string') {
+      // Error como string
+      errorMessage = error.error;
     } else if (error.status === 401) {
       errorMessage = 'Credenciales inválidas';
     } else if (error.status === 400) {
-      errorMessage = 'Datos inválidos';
+      // Para 400, intentar obtener más detalles
+      if (error.error?.errors) {
+        // Validaciones de Spring Boot
+        const keys = Object.keys(error.error.errors);
+        const errores = keys.map(k => error.error.errors[k]).join(', ');
+        errorMessage = `Errores de validación: ${errores}`;
+      } else {
+        errorMessage = 'Datos inválidos. Verifica todos los campos.';
+      }
     } else if (error.status === 0) {
       errorMessage = 'No se puede conectar con el servidor';
     }
     
+    console.error('Mensaje de error:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 }

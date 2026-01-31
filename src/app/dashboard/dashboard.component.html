@@ -20,25 +20,19 @@
         </div>
         <div class="card-body">
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
               <div class="form-group">
                 <label>Fecha Desde</label>
                 <input type="date" class="form-control" [(ngModel)]="fechaDesde">
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <div class="form-group">
                 <label>Fecha Hasta</label>
                 <input type="date" class="form-control" [(ngModel)]="fechaHasta">
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Filtrar Profesor</label>
-                <input type="text" class="form-control" placeholder="Nombre del profesor" [(ngModel)]="filtroNombreProfesor">
-              </div>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <div class="form-group">
                 <label>&nbsp;</label>
                 <button class="btn btn-primary btn-block" (click)="aplicarFiltros()">

@@ -31,9 +31,9 @@ export interface Equipo {
   providedIn: 'root'
 })
 export class EquipoService {
-  private apiUrl = 'http://localhost:8081/api/equipos';
-  private sedesUrl = 'http://localhost:8081/api/sedes';
-  private categoriasUrl = 'http://localhost:8081/api/categorias';
+  private apiUrl = 'http://localhost:8080/api/equipos';
+  private sedesUrl = 'http://localhost:8080/api/sedes';
+  private categoriasUrl = 'http://localhost:8080/api/categorias';
 
   constructor(private http: HttpClient) { }
 

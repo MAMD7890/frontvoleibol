@@ -14,7 +14,7 @@ export interface Categoria {
   providedIn: 'root'
 })
 export class CategoriaService {
-  private apiUrl = 'http://localhost:8081/api/categorias';
+  private apiUrl = 'http://localhost:8080/api/categorias';
 
   constructor(private http: HttpClient) { }
 

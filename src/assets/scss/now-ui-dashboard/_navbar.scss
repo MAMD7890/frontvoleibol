@@ -9,7 +9,7 @@
         vertical-align: middle;
 
         &:not(.btn):not(.dropdown-item){
-            color: $white-color;
+            color: #333333;
         }
 
         &.dropdown-item{
@@ -44,7 +44,7 @@
       .form-group-addon,
       .input-group-prepend .input-group-text,
       .input-group-append .input-group-text{
-        color: $white-color;
+        color: #333333;
 
         i {
           opacity: 1;
@@ -53,10 +53,10 @@
 
       &.no-border{
         .form-control{
-          color: $white-color;
+          color: #333333;
 
           @include placeholder(){
-            color: $white-color;
+            color: #666666;
           };
         }
       }
@@ -221,7 +221,7 @@
     &.navbar-transparent{
         background-color: $transparent-bg !important;
         box-shadow: none;
-        color: $white-color;
+        color: #333333;
     }
 
     &.bg-white:not(.navbar-transparent){

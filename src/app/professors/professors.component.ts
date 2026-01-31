@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { ProfesorService, Profesor } from '../services/profesor.service';
+import { ProfesorService, Profesor, ProfesorRegistroResponse } from '../services/profesor.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ProfessorsComponent implements OnInit {
   @ViewChild('modalContent') modalContent: any;
   @ViewChild('modalConfirmacion') modalConfirmacion: any;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   profesores: Profesor[] = [];
   profesoresFiltrados: Profesor[] = [];
@@ -21,6 +22,11 @@ export class ProfessorsComponent implements OnInit {
   editando = false;
   profesorIdEditando: number | null = null;
   profesorAEliminar: Profesor | null = null;
+
+  // Propiedades para manejo de foto
+  fotoSeleccionada: File | null = null;
+  fotoPreview: string | null = null;
+  cargandoFoto = false;
 
   // Filtros
   filtroNombre: string = '';
@@ -98,6 +104,7 @@ export class ProfessorsComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       documento: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      correo: ['', [Validators.required, Validators.email]],
       salarioPorClase: ['', [Validators.required, Validators.min(0)]],
       fotoUrl: [''],
       fotoNombre: [''],
@@ -109,6 +116,7 @@ export class ProfessorsComponent implements OnInit {
     this.editando = false;
     this.profesorIdEditando = null;
     this.formulario.reset({ estado: true });
+    this.limpiarFoto();
     this.modalRef = this.modalService.open(this.modalContent, { 
       size: 'lg',
       scrollable: true,
@@ -120,10 +128,18 @@ export class ProfessorsComponent implements OnInit {
   abrirModalEditar(profesor: Profesor): void {
     this.editando = true;
     this.profesorIdEditando = this.getProfesorId(profesor);
+    this.limpiarFoto();
+    
+    // Establecer vista previa de foto si existe
+    if (profesor.fotoUrl) {
+      this.fotoPreview = profesor.fotoUrl;
+    }
+    
     this.formulario.patchValue({
       nombre: profesor.nombre,
       documento: profesor.documento,
       telefono: profesor.telefono,
+      correo: profesor.correo || '',
       salarioPorClase: profesor.salarioPorClase,
       fotoUrl: profesor.fotoUrl || '',
       fotoNombre: profesor.fotoNombre || '',
@@ -151,6 +167,7 @@ export class ProfessorsComponent implements OnInit {
       nombre: datos.nombre,
       documento: datos.documento,
       telefono: datos.telefono,
+      correo: datos.correo,
       salarioPorClase: parseFloat(datos.salarioPorClase),
       fotoUrl: datos.fotoUrl || null,
       fotoNombre: datos.fotoNombre || null,
@@ -158,11 +175,17 @@ export class ProfessorsComponent implements OnInit {
     };
 
     if (this.editando && this.profesorIdEditando) {
+      // Actualizar profesor
       this.profesorService.actualizarProfesor(this.profesorIdEditando, profesor).subscribe(
         (response) => {
-          this.toastr.success('Profesor actualizado correctamente', 'Éxito');
-          this.cargarProfesores();
-          this.modalRef.close();
+          // Si hay foto nueva seleccionada, subirla
+          if (this.fotoSeleccionada) {
+            this.subirFotoProfesor(this.profesorIdEditando!, true);
+          } else {
+            this.toastr.success('Profesor actualizado correctamente', 'Éxito');
+            this.cargarProfesores();
+            this.modalRef.close();
+          }
         },
         (error) => {
           console.error('Error al actualizar profesor:', error);
@@ -170,18 +193,81 @@ export class ProfessorsComponent implements OnInit {
         }
       );
     } else {
-      this.profesorService.crearProfesor(profesor).subscribe(
-        (response) => {
-          this.toastr.success('Profesor creado correctamente', 'Éxito');
-          this.cargarProfesores();
-          this.modalRef.close();
-        },
-        (error) => {
-          console.error('Error al crear profesor:', error);
-          this.toastr.error('Error al crear el profesor', 'Error');
-        }
-      );
+      // Para crear profesor con usuario
+      if (this.fotoSeleccionada) {
+        // Si hay foto, usar el endpoint que registra todo en una sola petición
+        this.cargandoFoto = true;
+        this.profesorService.registrarProfesorConFoto(profesor, this.fotoSeleccionada).subscribe(
+          (response: ProfesorRegistroResponse) => {
+            this.cargandoFoto = false;
+            this.mostrarCredenciales(profesor.correo!, profesor.documento);
+            this.cargarProfesores();
+            this.modalRef.close();
+          },
+          (error) => {
+            this.cargandoFoto = false;
+            console.error('Error al crear profesor:', error);
+            const errorMsg = error.error?.message || error.message || 'Error al crear el profesor';
+            this.toastr.error(errorMsg, 'Error');
+          }
+        );
+      } else {
+        // Sin foto, usar el endpoint normal
+        this.profesorService.registrarProfesorConUsuario(profesor).subscribe(
+          (response: ProfesorRegistroResponse) => {
+            this.mostrarCredenciales(profesor.correo!, profesor.documento);
+            this.cargarProfesores();
+            this.modalRef.close();
+          },
+          (error) => {
+            console.error('Error al crear profesor:', error);
+            const errorMsg = error.error?.message || error.message || 'Error al crear el profesor';
+            this.toastr.error(errorMsg, 'Error');
+          }
+        );
+      }
     }
+  }
+
+  // Subir foto después de crear/actualizar profesor
+  subirFotoProfesor(profesorId: number, esActualizacion: boolean, correo?: string, documento?: string): void {
+    if (!this.fotoSeleccionada) return;
+    
+    this.cargandoFoto = true;
+    this.profesorService.uploadFoto(profesorId, this.fotoSeleccionada).subscribe(
+      (response) => {
+        this.cargandoFoto = false;
+        if (esActualizacion) {
+          this.toastr.success('Profesor y foto actualizados correctamente', 'Éxito');
+        } else {
+          this.mostrarCredenciales(correo!, documento!);
+        }
+        this.cargarProfesores();
+        this.modalRef.close();
+      },
+      (error) => {
+        console.error('Error al subir foto:', error);
+        this.cargandoFoto = false;
+        if (esActualizacion) {
+          this.toastr.warning('Profesor actualizado, pero hubo un error al subir la foto', 'Advertencia');
+        } else {
+          this.toastr.warning('Profesor creado, pero hubo un error al subir la foto', 'Advertencia');
+          this.mostrarCredenciales(correo!, documento!);
+        }
+        this.cargarProfesores();
+        this.modalRef.close();
+      }
+    );
+  }
+
+  mostrarCredenciales(correo: string, documento: string): void {
+    this.toastr.success(
+      `Profesor creado correctamente. Credenciales de acceso:<br>` +
+      `<strong>Email:</strong> ${correo}<br>` +
+      `<strong>Contraseña:</strong> ${documento}`, 
+      'Éxito',
+      { timeOut: 10000, closeButton: true, enableHtml: true }
+    );
   }
 
   eliminarProfesor(profesor: Profesor): void {
@@ -215,6 +301,55 @@ export class ProfessorsComponent implements OnInit {
   cerrarModal(): void {
     this.modalRef.close();
     this.profesorAEliminar = null;
+    this.limpiarFoto();
+  }
+
+  // ========== MANEJO DE FOTO ==========
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      
+      // Validar tipo de archivo
+      if (!file.type.startsWith('image/')) {
+        this.toastr.warning('Por favor selecciona un archivo de imagen válido', 'Archivo inválido');
+        return;
+      }
+      
+      // Validar tamaño (máximo 5MB)
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        this.toastr.warning('La imagen no debe superar los 5MB', 'Archivo muy grande');
+        return;
+      }
+      
+      this.fotoSeleccionada = file;
+      
+      // Crear vista previa local (no subir aún)
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.fotoPreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+      
+      this.toastr.info('Foto seleccionada. Se subirá al guardar el profesor.', 'Foto lista');
+    }
+  }
+
+  limpiarFoto(): void {
+    this.fotoSeleccionada = null;
+    this.fotoPreview = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
+  eliminarFoto(): void {
+    this.limpiarFoto();
+    this.formulario.patchValue({
+      fotoUrl: '',
+      fotoNombre: ''
+    });
   }
 
   formatearSalario(salario: number): string {

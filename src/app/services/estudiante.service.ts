@@ -64,8 +64,8 @@ export interface RegistroEstudianteResponse {
   providedIn: 'root'
 })
 export class EstudianteService {
-  private apiUrl = 'http://localhost:8081/api/estudiantes';
-  private sedesUrl = 'http://localhost:8081/api/sedes';
+  private apiUrl = 'http://localhost:8080/api/estudiantes';
+  private sedesUrl = 'http://localhost:8080/api/sedes';
 
   constructor(private http: HttpClient) { }
 

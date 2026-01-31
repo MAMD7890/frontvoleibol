@@ -46,9 +46,9 @@ export interface EstudianteAsistenciaDto {
   providedIn: 'root'
 })
 export class AsistenciaEstudianteService {
-  private apiUrl = 'http://localhost:8081/api/asistencia-estudiante';
-  private estudiantesUrl = 'http://localhost:8081/api/estudiantes';
-  private equiposUrl = 'http://localhost:8081/api/equipos';
+  private apiUrl = 'http://localhost:8080/api/asistencia-estudiante';
+  private estudiantesUrl = 'http://localhost:8080/api/estudiantes';
+  private equiposUrl = 'http://localhost:8080/api/equipos';
 
   constructor(private http: HttpClient) { }
 
@@ -81,6 +81,6 @@ export class AsistenciaEstudianteService {
   }
 
   obtenerSedes(): Observable<Sede[]> {
-    return this.http.get<Sede[]>('http://localhost:8081/api/sedes');
+    return this.http.get<Sede[]>('http://localhost:8080/api/sedes');
   }
 }

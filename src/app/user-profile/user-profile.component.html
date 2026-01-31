@@ -1,120 +1,279 @@
-<div class="panel-header panel-header-sm">
-</div>
+<div class="panel-header panel-header-sm"></div>
 <div class="main-content">
-  <div class="row">
+  <!-- Loading State -->
+  <div *ngIf="cargando" class="text-center p-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Cargando...</span>
+    </div>
+    <p class="mt-3">Cargando perfil...</p>
+  </div>
+
+  <div class="row" *ngIf="!cargando">
+    <!-- Columna Principal - Formulario de Perfil -->
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-          <h5 class="title">Edit Profile</h5>
+          <h5 class="title">
+            <i class="now-ui-icons users_single-02"></i> Editar Perfil
+          </h5>
         </div>
         <div class="card-body">
-          <form>
+          <form [formGroup]="perfilForm">
+            <!-- Nombre y Apellido -->
             <div class="row">
-              <div class="col-md-5 pr-1">
+              <div class="col-md-6">
                 <div class="form-group">
-                  <label>Company (disabled)</label>
-                  <input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc.">
+                  <label>Nombre *</label>
+                  <input type="text" class="form-control" 
+                         formControlName="nombre"
+                         placeholder="Tu nombre"
+                         [class.is-invalid]="perfilForm.get('nombre')?.invalid && perfilForm.get('nombre')?.touched">
+                  <div class="invalid-feedback" *ngIf="perfilForm.get('nombre')?.errors?.['required']">
+                    El nombre es requerido
+                  </div>
                 </div>
               </div>
-              <div class="col-md-3 px-1">
+              <div class="col-md-6">
                 <div class="form-group">
-                  <label>Username</label>
-                  <input type="text" class="form-control" placeholder="Username" value="michael23">
-                </div>
-              </div>
-              <div class="col-md-4 pl-1">
-                <div class="form-group">
-                  <label for="email">Email address</label>
-                  <input name="email" id="email" type="email" class="form-control" placeholder="Email">
+                  <label>Apellido</label>
+                  <input type="text" class="form-control" 
+                         formControlName="apellido"
+                         placeholder="Tu apellido">
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6 pr-1">
-                <div class="form-group">
-                  <label>First Name</label>
-                  <input type="text" class="form-control" placeholder="Company" value="Mike">
-                </div>
-              </div>
-              <div class="col-md-6 pl-1">
-                <div class="form-group">
-                  <label>Last Name</label>
-                  <input type="text" class="form-control" placeholder="Last Name" value="Andrew">
-                </div>
-              </div>
-            </div>
+
+            <!-- Email -->
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Address</label>
-                  <input type="text" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                  <label>Correo Electrónico *</label>
+                  <input type="email" class="form-control" 
+                         formControlName="email"
+                         placeholder="correo@ejemplo.com"
+                         [class.is-invalid]="perfilForm.get('email')?.invalid && perfilForm.get('email')?.touched">
+                  <div class="invalid-feedback" *ngIf="perfilForm.get('email')?.errors?.['required']">
+                    El correo es requerido
+                  </div>
+                  <div class="invalid-feedback" *ngIf="perfilForm.get('email')?.errors?.['email']">
+                    Ingresa un correo válido
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- Tipo y Número de Documento -->
             <div class="row">
-              <div class="col-md-4 pr-1">
+              <div class="col-md-4">
                 <div class="form-group">
-                  <label>City</label>
-                  <input type="text" class="form-control" placeholder="City" value="Mike">
+                  <label>Tipo de Documento</label>
+                  <select class="form-control" formControlName="tipoDocumento">
+                    <option *ngFor="let tipo of tiposDocumento" [value]="tipo.value">
+                      {{ tipo.label }}
+                    </option>
+                  </select>
                 </div>
               </div>
-              <div class="col-md-4 px-1">
+              <div class="col-md-4">
                 <div class="form-group">
-                  <label>Country</label>
-                  <input type="text" class="form-control" placeholder="Country" value="Andrew">
+                  <label>Número de Documento</label>
+                  <input type="text" class="form-control" 
+                         formControlName="numeroDocumento"
+                         placeholder="Número de documento">
                 </div>
               </div>
-              <div class="col-md-4 pl-1">
+              <div class="col-md-4">
                 <div class="form-group">
-                  <label>Postal Code</label>
-                  <input type="number" class="form-control" placeholder="ZIP Code">
+                  <label>Teléfono</label>
+                  <input type="text" class="form-control" 
+                         formControlName="telefono"
+                         placeholder="3001234567"
+                         [class.is-invalid]="perfilForm.get('telefono')?.invalid && perfilForm.get('telefono')?.touched">
+                  <div class="invalid-feedback" *ngIf="perfilForm.get('telefono')?.errors?.['pattern']">
+                    El teléfono debe tener 10 dígitos
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- Botón Guardar Perfil -->
             <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>About Me</label>
-                  <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
-                </div>
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-primary" 
+                        (click)="guardarPerfil()"
+                        [disabled]="guardando">
+                  <span *ngIf="!guardando">
+                    <i class="now-ui-icons ui-1_check"></i> Guardar Cambios
+                  </span>
+                  <span *ngIf="guardando">
+                    <i class="now-ui-icons loader_refresh spin"></i> Guardando...
+                  </span>
+                </button>
               </div>
             </div>
           </form>
         </div>
       </div>
+
+      <!-- Card de Cambio de Contraseña -->
+      <div class="card mt-4 password-card">
+        <div class="card-header">
+          <h5 class="title">
+            <i class="now-ui-icons ui-1_lock-circle-open"></i> Cambiar Contraseña
+          </h5>
+          <p class="card-category">Actualiza tu contraseña de acceso</p>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="passwordForm" class="password-form">
+            <!-- Contraseña Actual -->
+            <div class="password-field-container">
+              <div class="form-group">
+                <label><i class="fa fa-lock"></i> Contraseña Actual *</label>
+                <div class="password-input-wrapper">
+                  <input [type]="showCurrentPassword ? 'text' : 'password'" 
+                         class="form-control password-input" 
+                         formControlName="currentPassword"
+                         placeholder="Ingresa tu contraseña actual"
+                         [class.is-invalid]="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched">
+                  <button type="button" class="btn-eye" 
+                          (click)="togglePasswordVisibility('current')"
+                          title="Mostrar/Ocultar contraseña">
+                    <i class="fa" [ngClass]="showCurrentPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                  </button>
+                </div>
+                <div class="error-message" *ngIf="passwordForm.get('currentPassword')?.errors?.['required'] && passwordForm.get('currentPassword')?.touched">
+                  <i class="fa fa-exclamation-circle"></i> La contraseña actual es requerida
+                </div>
+              </div>
+            </div>
+
+            <hr class="password-divider">
+
+            <!-- Nueva Contraseña y Confirmación -->
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label><i class="fa fa-key"></i> Nueva Contraseña *</label>
+                  <div class="password-input-wrapper">
+                    <input [type]="showNewPassword ? 'text' : 'password'" 
+                           class="form-control password-input" 
+                           formControlName="newPassword"
+                           placeholder="Ingresa la nueva contraseña"
+                           [class.is-invalid]="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
+                    <button type="button" class="btn-eye" 
+                            (click)="togglePasswordVisibility('new')"
+                            title="Mostrar/Ocultar contraseña">
+                      <i class="fa" [ngClass]="showNewPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+                  </div>
+                  <div class="error-message" *ngIf="passwordForm.get('newPassword')?.errors?.['minlength'] && passwordForm.get('newPassword')?.touched">
+                    <i class="fa fa-exclamation-circle"></i> Mínimo 6 caracteres
+                  </div>
+                  <div class="password-hint" *ngIf="!passwordForm.get('newPassword')?.touched">
+                    <i class="fa fa-info-circle"></i> La contraseña debe tener al menos 6 caracteres
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label><i class="fa fa-check-circle"></i> Confirmar Contraseña *</label>
+                  <div class="password-input-wrapper">
+                    <input [type]="showConfirmPassword ? 'text' : 'password'" 
+                           class="form-control password-input" 
+                           formControlName="confirmPassword"
+                           placeholder="Confirma la nueva contraseña"
+                           [class.is-invalid]="passwordForm.get('confirmPassword')?.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched">
+                    <button type="button" class="btn-eye" 
+                            (click)="togglePasswordVisibility('confirm')"
+                            title="Mostrar/Ocultar contraseña">
+                      <i class="fa" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+                  </div>
+                  <div class="error-message" *ngIf="passwordForm.get('confirmPassword')?.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched">
+                    <i class="fa fa-exclamation-circle"></i> Las contraseñas no coinciden
+                  </div>
+                  <div class="success-message" *ngIf="passwordForm.get('confirmPassword')?.valid && passwordForm.get('confirmPassword')?.touched && !passwordForm.get('confirmPassword')?.errors?.['mismatch']">
+                    <i class="fa fa-check"></i> Las contraseñas coinciden
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón Cambiar Contraseña -->
+            <div class="password-actions">
+              <button type="button" class="btn btn-warning btn-change-password" 
+                      (click)="cambiarPassword()"
+                      [disabled]="cambiandoPassword || passwordForm.invalid">
+                <span *ngIf="!cambiandoPassword">
+                  <i class="now-ui-icons ui-1_lock-circle-open"></i> Cambiar Contraseña
+                </span>
+                <span *ngIf="cambiandoPassword">
+                  <i class="now-ui-icons loader_refresh spin"></i> Cambiando...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+
+    <!-- Columna Lateral - Foto de Perfil -->
     <div class="col-md-4">
       <div class="card card-user">
         <div class="image">
-          <img src="../assets/img/bg5.jpg" alt="...">
+          <img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*nv-KPiK2kySuAsfHdO3mkA.png" alt="Logo">
         </div>
         <div class="card-body">
           <div class="author">
-            <a href="#">
-              <img class="avatar border-gray" src="../assets/img/mike.jpg" alt="...">
-              <h5 class="title">Mike Andrew</h5>
-            </a>
-            <p class="description">
-              michael24
-            </p>
+            <!-- Foto de perfil -->
+            <div class="avatar-upload-container">
+              <div class="avatar-wrapper">
+                <img *ngIf="fotoPreview" 
+                     [src]="fotoPreview" 
+                     alt="Foto de perfil" 
+                     class="avatar border-gray avatar-large">
+                <div *ngIf="!fotoPreview" class="avatar-initials-large">
+                  {{ getUserInitials() }}
+                </div>
+                
+                <!-- Overlay para editar -->
+                <label class="avatar-edit-overlay" for="fotoInput">
+                  <i class="now-ui-icons ui-1_camera-compact"></i>
+                  <span>Cambiar</span>
+                </label>
+              </div>
+              
+              <input type="file" 
+                     #fileInput
+                     id="fotoInput" 
+                     class="foto-input"
+                     accept="image/*"
+                     (change)="onFileSelected($event)">
+            </div>
+            
+            <h5 class="title">{{ currentUser?.nombre }}</h5>
+            <p class="description">{{ currentUser?.email }}</p>
+            <span class="badge badge-primary">{{ currentUser?.rol }}</span>
           </div>
-          <p class="description text-center">
-            "Lamborghini Mercy
-            <br> Your chick she so thirsty
-            <br> I'm in that two seat Lambo"
-          </p>
-        </div>
-        <hr>
-        <div class="button-container">
-          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-            <i class="fab fa-facebook-f"></i>
-          </button>
-          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-            <i class="fab fa-twitter"></i>
-          </button>
-          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-            <i class="fab fa-google-plus-g"></i>
-          </button>
+          
+          <!-- Botones de foto -->
+          <div class="foto-actions" *ngIf="fotoSeleccionada">
+            <button class="btn btn-sm btn-success" 
+                    (click)="subirFoto()"
+                    [disabled]="cargandoFoto">
+              <span *ngIf="!cargandoFoto">
+                <i class="now-ui-icons arrows-1_cloud-upload-94"></i> Guardar Foto
+              </span>
+              <span *ngIf="cargandoFoto">
+                <i class="now-ui-icons loader_refresh spin"></i> Subiendo...
+              </span>
+            </button>
+            <button class="btn btn-sm btn-secondary" 
+                    (click)="eliminarFoto()"
+                    [disabled]="cargandoFoto">
+              <i class="now-ui-icons ui-1_simple-remove"></i> Cancelar
+            </button>
+          </div>
         </div>
       </div>
     </div>

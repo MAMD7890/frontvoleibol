@@ -1,37 +1,27 @@
 
-<nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute bg-primary fixed-top">
+<nav class="navbar navbar-expand-lg navbar-absolute fixed-top" style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%) !important; border-bottom: 1px solid rgba(100, 181, 246, 0.3) !important;">
     <div class="container-fluid">
         <div class="navbar-wrapper">
             <div class="navbar-toggle">
                 <button type="button" class="navbar-toggler" (click)="sidebarToggle()">
-                    <span class="navbar-toggler-bar bar1"></span>
-                    <span class="navbar-toggler-bar bar2"></span>
-                    <span class="navbar-toggler-bar bar3"></span>
+                    <span class="navbar-toggler-bar bar1" style="background: #333333 !important;"></span>
+                    <span class="navbar-toggler-bar bar2" style="background: #333333 !important;"></span>
+                    <span class="navbar-toggler-bar bar3" style="background: #333333 !important;"></span>
                 </button>
             </div>
-            <a class="navbar-brand" href="#pablo">{{getTitle()}}</a>
+            <a class="navbar-brand" href="#pablo" style="color: #333333 !important; font-weight: 600;">{{getTitle()}}</a>
         </div>
         <button class="navbar-toggler" type="button" (click)="collapse()"
           [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
+          <span class="navbar-toggler-bar navbar-kebab" style="background: #333333 !important;"></span>
+          <span class="navbar-toggler-bar navbar-kebab" style="background: #333333 !important;"></span>
+          <span class="navbar-toggler-bar navbar-kebab" style="background: #333333 !important;"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
-          <form>
-            <div class="input-group no-border">
-              <input type="text" value="" class="form-control" placeholder="Search...">
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <i class="now-ui-icons ui-1_zoom-bold"></i>
-                </div>
-              </div>
-            </div>
-          </form>
           <ul class="navbar-nav">
             <!-- User Profile Dropdown -->
             <li class="nav-item user-dropdown" ngbDropdown placement="bottom-right">
-              <a class="nav-link user-toggle" id="userDropdown" ngbDropdownToggle>
+              <a class="nav-link user-toggle" id="userDropdown" ngbDropdownToggle style="color: #333333 !important;">
                 <div class="user-avatar-nav">
                   <img *ngIf="getUserPhotoUrl()" [src]="getUserPhotoUrl()" alt="User Photo">
                   <span *ngIf="!getUserPhotoUrl()" class="avatar-initials-nav">{{ getUserInitials() }}</span>

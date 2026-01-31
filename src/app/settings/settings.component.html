@@ -45,8 +45,8 @@
                       {{ sede.estado ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
-                  <td class="text-center actions-cell">
-                    <div class="actions-container">
+                  <td class="text-center">
+                    <div class="btn-group-actions">
                       <button class="btn btn-sm btn-info" 
                               (click)="abrirModalEditarSede(sede)"
                               title="Ver/Editar detalles">
@@ -109,16 +109,18 @@
                   <td><strong>{{ categoria.nombre }}</strong></td>
                   <td>{{ categoria.descripcion }}</td>
                   <td class="text-center">
-                    <button class="btn btn-sm btn-info mr-2" 
-                            (click)="abrirModalEditarCategoria(categoria)"
-                            title="Ver/Editar detalles">
-                      <i class="now-ui-icons ui-2_settings-90"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" 
-                            (click)="eliminarCategoria(categoria)"
-                            title="Eliminar">
-                      <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </button>
+                    <div class="btn-group-actions">
+                      <button class="btn btn-sm btn-info" 
+                              (click)="abrirModalEditarCategoria(categoria)"
+                              title="Ver/Editar detalles">
+                        <i class="now-ui-icons ui-2_settings-90"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" 
+                              (click)="eliminarCategoria(categoria)"
+                              title="Eliminar">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>

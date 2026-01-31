@@ -27,6 +27,9 @@ export interface UserInfo {
   nombre: string;
   email: string;
   fotoUrl: string | null;
+  tipoDocumento?: string;
+  numeroDocumento?: string;
+  telefono?: string;
   rol: string;
 }
 

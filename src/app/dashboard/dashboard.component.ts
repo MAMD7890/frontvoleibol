@@ -298,8 +298,8 @@ export class DashboardComponent implements OnInit {
       this.gradientStroke.addColorStop(1, this.chartColor);
 
       this.gradientFill = this.ctx.createLinearGradient(0, 200, 0, 50);
-      this.gradientFill.addColorStop(0, "rgba(201, 162, 39, 0)");
-      this.gradientFill.addColorStop(1, "rgba(201, 162, 39, 0.24)");
+      this.gradientFill.addColorStop(0, "rgba(66, 165, 245, 0)");
+      this.gradientFill.addColorStop(1, "rgba(66, 165, 245, 0.3)");
     }
 
     this.lineBigDashboardChartData = [
@@ -317,11 +317,11 @@ export class DashboardComponent implements OnInit {
     this.lineBigDashboardChartColors = [
       {
         backgroundColor: this.gradientFill,
-        borderColor: "#c9a227",
-        pointBorderColor: "#c9a227",
-        pointBackgroundColor: "#1a1a1a",
-        pointHoverBackgroundColor: "#1a1a1a",
-        pointHoverBorderColor: "#c9a227",
+        borderColor: "#1565C0",
+        pointBorderColor: "#1565C0",
+        pointBackgroundColor: "#FFFFFF",
+        pointHoverBackgroundColor: "#FFFFFF",
+        pointHoverBorderColor: "#42A5F5",
       }
     ];
     this.lineBigDashboardChartLabels = ["Cargando..."];
@@ -349,7 +349,7 @@ export class DashboardComponent implements OnInit {
       scales: {
         yAxes: [{
           ticks: {
-            fontColor: "rgba(255,255,255,0.4)",
+            fontColor: "#333333",
             fontStyle: "bold",
             beginAtZero: true,
             maxTicksLimit: 5,
@@ -362,13 +362,13 @@ export class DashboardComponent implements OnInit {
             drawTicks: true,
             drawBorder: false,
             display: true,
-            color: "rgba(255,255,255,0.1)",
+            color: "rgba(0,0,0,0.1)",
             zeroLineColor: "transparent"
           }
         }],
         xAxes: [{
           gridLines: { zeroLineColor: "transparent", display: false },
-          ticks: { padding: 10, fontColor: "rgba(255,255,255,0.4)", fontStyle: "bold" }
+          ticks: { padding: 10, fontColor: "#333333", fontStyle: "bold" }
         }]
       }
     };

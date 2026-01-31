@@ -107,16 +107,18 @@
                     </span>
                   </td>
                   <td class="text-center">
-                    <button class="btn btn-sm btn-info mr-2" 
-                            (click)="abrirModalEditar(profesor)"
-                            title="Ver/Editar detalles">
-                      <i class="now-ui-icons ui-2_settings-90"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" 
-                            (click)="eliminarProfesor(profesor)"
-                            title="Eliminar">
-                      <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </button>
+                    <div class="btn-group-actions">
+                      <button class="btn btn-sm btn-info" 
+                              (click)="abrirModalEditar(profesor)"
+                              title="Ver/Editar detalles">
+                        <i class="now-ui-icons ui-2_settings-90"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" 
+                              (click)="eliminarProfesor(profesor)"
+                              title="Eliminar">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -200,6 +202,28 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
+            <label for="correo">Correo Electrónico *</label>
+            <input type="email" class="form-control" id="correo" 
+                   formControlName="correo"
+                   placeholder="Ej: profesor@email.com"
+                   [class.is-invalid]="formulario.get('correo')?.invalid && formulario.get('correo')?.touched">
+            <div class="invalid-feedback" *ngIf="formulario.get('correo')?.errors?.['required']">
+              El correo es requerido
+            </div>
+            <div class="invalid-feedback" *ngIf="formulario.get('correo')?.errors?.['email']">
+              Ingrese un correo válido
+            </div>
+            <small class="form-text text-muted" *ngIf="!editando">
+              <i class="now-ui-icons ui-1_lock-circle-open"></i> Este correo será usado como credencial de acceso
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tercera fila - Salario -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
             <label for="salarioPorClase">Salario por Clase *</label>
             <input type="number" class="form-control" id="salarioPorClase" 
                    formControlName="salarioPorClase"
@@ -214,39 +238,74 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Tercera fila - Foto -->
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="fotoUrl">URL de Foto</label>
-            <input type="url" class="form-control" id="fotoUrl" 
-                   formControlName="fotoUrl"
-                   placeholder="https://ejemplo.com/foto.jpg">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="fotoNombre">Nombre del Archivo de Foto</label>
-            <input type="text" class="form-control" id="fotoNombre" 
-                   formControlName="fotoNombre"
-                   placeholder="Ej: juan_garcia.jpg">
-          </div>
-        </div>
-      </div>
-
-      <!-- Cuarta fila - Estado -->
-      <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label>Estado</label>
-            <div class="custom-control custom-switch">
+            <div class="custom-control custom-switch mt-2">
               <input type="checkbox" class="custom-control-input" id="estado" formControlName="estado">
               <label class="custom-control-label" for="estado">
                 {{ formulario.get('estado')?.value ? 'Activo' : 'Inactivo' }}
               </label>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuarta fila - Foto de Perfil -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label><i class="now-ui-icons users_circle-08"></i> Foto de Perfil</label>
+            <div class="foto-upload-container">
+              <!-- Vista previa de foto -->
+              <div class="foto-preview-wrapper" *ngIf="fotoPreview || formulario.get('fotoUrl')?.value">
+                <img [src]="fotoPreview || formulario.get('fotoUrl')?.value" 
+                     alt="Vista previa" 
+                     class="foto-preview">
+                <button type="button" class="btn btn-sm btn-danger foto-remove-btn" 
+                        (click)="eliminarFoto()"
+                        title="Eliminar foto">
+                  <i class="now-ui-icons ui-1_simple-remove"></i>
+                </button>
+              </div>
+              
+              <!-- Input para seleccionar foto -->
+              <div class="foto-input-wrapper">
+                <input type="file" 
+                       #fileInput
+                       class="foto-input" 
+                       id="fotoInput"
+                       accept="image/*"
+                       (change)="onFileSelected($event)">
+                <label for="fotoInput" class="btn btn-outline-primary foto-label">
+                  <span *ngIf="!cargandoFoto">
+                    <i class="now-ui-icons arrows-1_cloud-upload-94"></i>
+                    {{ fotoPreview || formulario.get('fotoUrl')?.value ? 'Cambiar Foto' : 'Subir Foto' }}
+                  </span>
+                  <span *ngIf="cargandoFoto">
+                    <i class="now-ui-icons loader_refresh spin"></i> Subiendo...
+                  </span>
+                </label>
+                <small class="form-text text-muted">
+                  Formatos permitidos: JPG, PNG, GIF. Máximo 5MB.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información de credenciales (solo al crear) -->
+      <div class="row" *ngIf="!editando">
+        <div class="col-md-12">
+          <div class="alert alert-info">
+            <i class="now-ui-icons ui-1_lock-circle-open"></i>
+            <strong>Credenciales de acceso:</strong> Al registrar este profesor, se creará automáticamente un usuario con las siguientes credenciales:
+            <ul class="mb-0 mt-2">
+              <li><strong>Email:</strong> El correo electrónico ingresado arriba</li>
+              <li><strong>Contraseña:</strong> El número de documento</li>
+            </ul>
+            <small class="text-muted">El profesor tendrá acceso a: Registro de estudiantes y Reportes de asistencia</small>
           </div>
         </div>
       </div>

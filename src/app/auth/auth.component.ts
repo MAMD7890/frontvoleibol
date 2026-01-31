@@ -48,9 +48,19 @@ export class AuthComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Si ya está autenticado, redirigir al dashboard
+    // Si ya está autenticado, redirigir según el rol
     if (this.authService.isAuthenticated) {
-      this.router.navigate(['/dashboard']);
+      const currentUser = this.authService.currentUserValue;
+      const rol = currentUser?.rol?.toUpperCase() || '';
+      
+      if (rol === 'STUDENT' || rol === 'ROLE_STUDENT') {
+        this.router.navigate(['/student/plans']);
+      } else if (rol === 'PROFESOR' || rol === 'ROLE_PROFESOR') {
+        this.router.navigate(['/student-attendance-report']);
+      } else if (rol === 'ADMIN' || rol === 'ROLE_ADMIN' || rol === 'USER' || rol === 'ROLE_USER') {
+        this.router.navigate(['/dashboard']);
+      }
+      return;
     }
 
     // Obtener URL de retorno
@@ -170,9 +180,25 @@ export class AuthComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         this.successMessage = `¡Bienvenido, ${response.user.nombre}!`;
+        
+        // Debug: mostrar rol en consola
+        console.log('Usuario autenticado:', response.user);
+        console.log('Rol del usuario:', response.user.rol);
+        
         setTimeout(() => {
-          // Redirigir a /student/plans si el rol es STUDENT
-          const redirectPath = response.user.rol === 'STUDENT' ? '/student/plans' : this.returnUrl;
+          // Redirigir según el rol del usuario
+          const rol = response.user.rol?.toUpperCase() || '';
+          let redirectPath = '/auth/login';
+          
+          if (rol === 'STUDENT' || rol === 'ROLE_STUDENT') {
+            redirectPath = '/student/plans';
+          } else if (rol === 'PROFESOR' || rol === 'ROLE_PROFESOR') {
+            redirectPath = '/student-attendance-report';
+          } else if (rol === 'ADMIN' || rol === 'ROLE_ADMIN' || rol === 'USER' || rol === 'ROLE_USER') {
+            redirectPath = '/dashboard';
+          }
+          
+          console.log('Redirigiendo a:', redirectPath);
           this.router.navigate([redirectPath]);
         }, 1000);
       },

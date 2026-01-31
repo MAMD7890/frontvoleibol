@@ -15,7 +15,7 @@ export interface Sede {
   providedIn: 'root'
 })
 export class SedeService {
-  private apiUrl = 'http://localhost:8081/api/sedes';
+  private apiUrl = 'http://localhost:8080/api/sedes';
 
   constructor(private http: HttpClient) { }
 

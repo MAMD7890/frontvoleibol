@@ -24,7 +24,7 @@ export interface ReportePagoDocentesDto {
   providedIn: 'root'
 })
 export class ReportePagoDocenteService {
-  private apiUrl = 'http://localhost:8081/api/reportes/pagos-docentes';
+  private apiUrl = 'http://localhost:8080/api/reportes/pagos-docentes';
 
   constructor(private http: HttpClient) { }
 

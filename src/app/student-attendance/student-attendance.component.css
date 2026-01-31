@@ -19,8 +19,8 @@
 
 /* Filtros */
 .filtros-section {
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #e3e3e3;
+  background: linear-gradient(135deg, #F5F5F5 0%, #FFFFFF 100%);
+  border-bottom: 1px solid #BBDEFB;
   padding: 1rem 1.5rem;
 }
 
@@ -31,24 +31,32 @@
 .filtros-section label {
   font-size: 12px;
   font-weight: 600;
-  color: #666;
+  color: #0D47A1;
   margin-bottom: 0.25rem;
 }
 
 .filtros-section .form-control {
   font-size: 13px;
   padding: 0.5rem 0.75rem;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.filtros-section .form-control:focus {
+  border-color: #1E88E5;
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
 }
 
 .fecha-input {
   font-weight: 600;
-  border-color: rgba(26, 26, 26, 0.8);
+  border-color: #1E88E5 !important;
 }
 
 .resumen-asistencia {
   margin-top: 1rem;
   padding-top: 0.75rem;
-  border-top: 1px dashed #ddd;
+  border-top: 1px dashed #BBDEFB;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -58,7 +66,7 @@
 
 .fecha-display {
   font-size: 16px;
-  color: #333;
+  color: #212121;
   text-transform: capitalize;
 }
 
@@ -73,48 +81,64 @@
 .acciones-rapidas {
   padding: 0.75rem 1.5rem;
   background-color: #fff;
-  border-bottom: 1px solid #e3e3e3;
+  border-bottom: 1px solid #E0E0E0;
 }
 
 /* Tabla */
 .table-responsive {
   overflow-x: auto;
+  border-radius: 12px;
 }
 
 .table {
   min-width: 100%;
   margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #FFFFFF;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.7);
 }
 
 .table thead th {
   font-weight: 600;
-  border-bottom: 2px solid rgba(26, 26, 26, 0.8);
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+  color: #212121;
+  border: none;
   white-space: nowrap;
-  color: rgba(26, 26, 26, 0.8);
-  background-color: #f9f9f9;
-  padding: 1rem;
+  padding: 14px 16px;
+  font-size: 0.9rem;
 }
 
 .table tbody tr {
-  transition: all 0.3s ease;
-  border-bottom: 1px solid #e3e3e3;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
 }
 
 .table tbody tr:hover {
-  background-color: rgba(44, 168, 255, 0.05);
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
 .table tbody tr.row-presente {
-  background-color: rgba(24, 206, 15, 0.08);
+  background-color: rgba(67, 160, 71, 0.08);
 }
 
 .table tbody tr.row-registrado {
-  background-color: rgba(24, 206, 15, 0.15);
+  background-color: rgba(67, 160, 71, 0.12);
 }
 
 .table tbody td {
-  padding: 0.75rem 1rem;
+  padding: 14px 16px;
   vertical-align: middle;
+  border: none;
+  color: #424242;
+  font-size: 0.9rem;
 }
 
 .documento {
@@ -128,42 +152,48 @@
 
 /* Badges */
 .badge {
-  padding: 5px 10px;
-  border-radius: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
   font-size: 12px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  font-weight: 600;
 }
 
 .badge-success {
-  background-color: #18ce0f;
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
   color: white;
+  box-shadow: 0 2px 6px rgba(67, 160, 71, 0.3);
 }
 
 .badge-primary {
-  background-color: rgba(26, 26, 26, 0.8);
+  background: linear-gradient(135deg, #1E88E5 0%, #0D47A1 100%);
   color: white;
+  box-shadow: 0 2px 6px rgba(30, 136, 229, 0.3);
 }
 
 .badge-warning {
-  background-color: #FFB236;
-  color: white;
+  background: linear-gradient(135deg, #FFC107 0%, #FFB300 100%);
+  color: #0D47A1;
+  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
 }
 
 .badge-info {
-  background-color: rgba(26, 26, 26, 0.8);
+  background: linear-gradient(135deg, #29B6F6 0%, #0288D1 100%);
   color: white;
+  box-shadow: 0 2px 6px rgba(2, 136, 209, 0.3);
 }
 
 .badge-secondary {
-  background-color: #888888;
+  background: linear-gradient(135deg, #78909C 0%, #546E7A 100%);
   color: white;
 }
 
 .badge-light {
   background-color: #fff;
-  color: #333;
+  color: #212121;
+  border: 1px solid #E0E0E0;
 }
 
 /* Toggle de asistencia */
@@ -188,23 +218,29 @@
 
 /* Botones */
 .btn-outline-secondary {
-  border-color: #888;
-  color: #888;
+  background: linear-gradient(135deg, #78909C 0%, #546E7A 100%);
+  border: none;
+  color: #FFFFFF;
+  transition: all 0.3s ease;
 }
 
 .btn-outline-secondary:hover {
-  background-color: #888;
-  color: white;
+  background: linear-gradient(135deg, #546E7A 0%, #37474F 100%);
+  color: #FFFFFF;
+  transform: translateY(-1px);
 }
 
 .btn-outline-success {
-  border-color: #18ce0f;
-  color: #18ce0f;
+  background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+  border: none;
+  color: #FFFFFF;
+  transition: all 0.3s ease;
 }
 
 .btn-outline-success:hover {
-  background-color: #18ce0f;
-  color: white;
+  background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+  color: #FFFFFF;
+  transform: translateY(-1px);
 }
 
 .text-center {
@@ -221,7 +257,7 @@
 }
 
 .spinner-border {
-  color: rgba(26, 26, 26, 0.8);
+  color: #1E88E5;
 }
 
 /* Form control pequeño */
